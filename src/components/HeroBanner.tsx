@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePlatform } from '../context/PlatformContext';
 import { leadDoctor } from '../data/catalog';
 import { scrollToCatalog } from '../lib/scrollToCatalog';
 import { Search, ShieldCheck } from 'lucide-react';
 
 export const HeroBanner = () => {
-  const { modules, filters, setFilters } = usePlatform();
+  const { modules, setFilters } = usePlatform();
+
+  /**
+   * La consulta se guarda acá y recién viaja al filtro global al enviar.
+   * Si escribiera directo sobre el filtro, la portada se reemplazaría por el
+   * listado de resultados con la primera letra y el campo desaparecería
+   * debajo del cursor.
+   */
+  const [consulta, setConsulta] = useState('');
 
   const totalEpisodes = modules.reduce((acc, mod) => acc + mod.episodes.length, 0);
   const totalMinutes = modules.reduce(
@@ -21,8 +29,9 @@ export const HeroBanner = () => {
     { value: leadDoctor.experienceYears.toString(), label: 'Años de consultorio' },
   ];
 
-  const goToCatalog = (event: React.FormEvent) => {
+  const buscar = (event: React.FormEvent) => {
     event.preventDefault();
+    setFilters((prev) => ({ ...prev, searchQuery: consulta }));
     scrollToCatalog();
   };
 
@@ -46,7 +55,7 @@ export const HeroBanner = () => {
             </p>
 
             {/* Buscador clínico integrado */}
-            <form onSubmit={goToCatalog} className="mt-7 flex flex-col sm:flex-row gap-2 max-w-xl">
+            <form onSubmit={buscar} className="mt-7 flex flex-col sm:flex-row gap-2 max-w-xl">
               <div className="relative flex-1">
                 <Search
                   className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-muted"
@@ -54,8 +63,8 @@ export const HeroBanner = () => {
                 />
                 <input
                   type="search"
-                  value={filters.searchQuery}
-                  onChange={(e) => setFilters((prev) => ({ ...prev, searchQuery: e.target.value }))}
+                  value={consulta}
+                  onChange={(e) => setConsulta(e.target.value)}
                   placeholder="Escribí el síntoma: sueño, colapso, escuela, medicación"
                   aria-label="Buscar por síntoma o tema clínico"
                   className="field pl-9 py-3"

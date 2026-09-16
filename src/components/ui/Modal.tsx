@@ -22,21 +22,34 @@ const WIDTHS: Record<NonNullable<ModalProps['width']>, string> = {
 export const Modal = ({ onClose, labelledBy, width = 'md', children }: ModalProps) => {
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // `onClose` llega como función nueva en cada render del componente padre.
+  // Guardarla en una referencia evita que los efectos de abajo dependan de
+  // ella y se vuelvan a ejecutar con cada tecla que se escribe.
+  const onCloseRef = useRef(onClose);
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', onKeyDown);
+    onCloseRef.current = onClose;
+  });
 
+  // Enfocar el panel y bloquear el scroll son cosas de la apertura. Si esto
+  // corriera en cada render, el foco volvería al panel tras la primera letra
+  // y ningún formulario del modal se podría completar.
+  useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     panelRef.current?.focus();
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = previousOverflow;
     };
-  }, [onClose]);
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onCloseRef.current();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   return (
     <div
