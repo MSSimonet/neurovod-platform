@@ -1,84 +1,74 @@
 import React from 'react';
-import { Activity, ShieldAlert, Heart, Mail, Phone, ExternalLink } from 'lucide-react';
+import { leadDoctor } from '../data/catalog';
 
-export const Footer: React.FC = () => {
+const CATEGORIES = [
+  'Trastorno por Déficit de Atención (TDAH)',
+  'Condición del Espectro Autista (TEA)',
+  'Regulación sensorial y alimentación',
+  'Congresos y actualización médica',
+];
+
+const LEGAL = ['Términos del servicio', 'Privacidad del paciente', 'Política de reintegros'];
+
+export const Footer = () => {
   return (
-    <footer className="bg-slate-950 border-t border-slate-900 pt-12 pb-8 px-4 sm:px-8 lg:px-12 text-slate-400">
-      <div className="max-w-7xl mx-auto space-y-10">
-        {/* Main Footer Row */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Col 1: Brand & Identity */}
-          <div className="space-y-3 md:col-span-2">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-cyan-600 flex items-center justify-center text-slate-950 font-black">
-                <Activity className="w-4 h-4 text-slate-950 stroke-[2.5]" />
-              </div>
-              <span className="text-lg font-black text-white tracking-wider">
-                NEURO<span className="text-cyan-400">VOD</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">
-                Médica
-              </span>
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed max-w-md">
-              Plataforma de Video On Demand creada por especialistas en neurodesarrollo. Democratizando el acceso a psicoeducación médica de excelencia para familias con hijos con TDAH, Autismo (TEA) y desafíos sensoriales.
+    <footer className="bg-card border-t border-rule">
+      <div className="shell py-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+          {/* Identidad */}
+          <div className="md:col-span-5">
+            <p className="font-serif text-2xl leading-none text-ink">
+              NeuroVOD <span className="kicker align-middle">Médica</span>
+            </p>
+            <p className="mt-4 max-w-sm text-[13px] leading-relaxed text-ink-secondary">
+              Programas clínicos en video sobre TDAH, Autismo y neurodesarrollo. Dirigidos a
+              familias, docentes y equipos terapéuticos de Argentina y Latinoamérica.
+            </p>
+            <p className="tabular mt-5 text-2xs uppercase tracking-wider text-ink-muted">
+              {leadDoctor.name} · Matrícula {leadDoctor.licenseNumber}
             </p>
           </div>
 
-          {/* Col 2: Condiciones y Módulos */}
-          <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Categorías Principales
-            </h4>
-            <ul className="space-y-1.5 text-xs">
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">Trastorno por Déficit de Atención (TDAH)</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">Condición del Espectro Autista (TEA)</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">Desafíos Sensoriales y Selectividad</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">Clases Magistrales y Congresos</a></li>
+          {/* Categorías */}
+          <nav className="md:col-span-4" aria-label="Categorías clínicas">
+            <p className="label">Categorías</p>
+            <ul className="space-y-2">
+              {CATEGORIES.map((item) => (
+                <li key={item}>
+                  <span className="text-[13px] text-ink-secondary">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Contacto */}
+          <div className="md:col-span-3">
+            <p className="label">Contacto</p>
+            <ul className="space-y-2 text-[13px] text-ink-secondary">
+              <li>contacto@neurovod.med.ar</li>
+              <li className="tabular">+54 11 4821 0000</li>
+              <li className="text-ink-muted">Consultorio en CABA, con agenda sujeta a disponibilidad.</li>
             </ul>
           </div>
-
-          {/* Col 3: Contacto & Consultas */}
-          <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Atención y Soporte
-            </h4>
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5 text-cyan-400" />
-                <span>contacto@neurovod.med.ar</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Consultorio CABA: +54 (11) 4821-XXXX</span>
-              </div>
-              <p className="text-[11px] text-slate-500 pt-1">
-                Consultas presenciales sujetas a disponibilidad de agenda en consultorio.
-              </p>
-            </div>
-          </div>
         </div>
 
-        {/* Medical Disclaimer Box */}
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-400 flex items-start gap-3">
-          <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-          <p className="leading-relaxed">
-            <strong className="text-slate-200">Aviso Médico Legal Importante:</strong> El contenido de esta plataforma de streaming tiene fines estrictamente psicoeducativos, formativos y de orientación familiar. Ningún video, guía descargable o material aquí presentado sustituye la consulta médica individualizada, el diagnóstico clínico personalizado ni la prescripción farmacológica directa por parte del profesional tratante de su hijo.
+        {/* Aviso legal */}
+        <div className="evidence mt-12">
+          <strong className="text-ink">Aviso médico.</strong> El contenido de esta plataforma tiene
+          fines psicoeducativos y de orientación familiar. Ningún video ni guía descargable
+          sustituye la consulta médica individual, el diagnóstico clínico ni la prescripción
+          farmacológica del profesional tratante.
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-rule flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <p className="tabular text-2xs text-ink-muted">
+            © 2026 NEUROVOD MÉDICA · BUENOS AIRES, ARGENTINA
           </p>
-        </div>
-
-        {/* Bottom Copyright */}
-        <div className="pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
-          <div>
-            © 2026 NeuroVOD Médica. Desarrollado para orientación clínica especializada en Argentina y Latinoamérica.
-          </div>
-          <div className="flex items-center gap-4 text-[11px]">
-            <a href="#" className="hover:text-slate-300">Términos de Servicio</a>
-            <span>•</span>
-            <a href="#" className="hover:text-slate-300">Privacidad del Paciente</a>
-            <span>•</span>
-            <a href="#" className="hover:text-slate-300">Seguridad de Pagos</a>
-          </div>
+          <ul className="flex flex-wrap items-center gap-4 text-2xs text-ink-muted">
+            {LEGAL.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>

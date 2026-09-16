@@ -2,13 +2,26 @@ export type ConditionType = 'TDAH' | 'Autismo' | 'Sensorial' | 'General';
 
 export type ContentType = 'Modulo' | 'Guia' | 'Congreso' | 'Tip';
 
-export type TargetAudience = 'Preescolar (2-5 años)' | 'Escolar (6-12 años)' | 'Adolescentes (13-18 años)' | 'Familias y Cuidadores';
+export type TargetAudience =
+  | 'Preescolar (2-5 años)'
+  | 'Escolar (6-12 años)'
+  | 'Adolescentes (13-18 años)'
+  | 'Familias y Cuidadores';
 
 export interface Chapter {
   id: string;
   timeSeconds: number;
   title: string;
   description?: string;
+}
+
+export type ResourceType = 'pdf' | 'checklist' | 'guide';
+
+export interface EpisodeResource {
+  title: string;
+  type: ResourceType;
+  size: string;
+  downloadUrl?: string;
 }
 
 export interface Episode {
@@ -20,23 +33,19 @@ export interface Episode {
   videoUrl: string;
   thumbnailUrl: string;
   chapters: Chapter[];
-  resources?: {
-    title: string;
-    type: 'pdf' | 'checklist' | 'guide';
-    size: string;
-    downloadUrl?: string;
-  }[];
+  resources?: EpisodeResource[];
 }
 
 export interface DoctorProfile {
   name: string;
   title: string;
   specialty: string;
-  licenseNumber: string; // Matrícula profesional
+  /** Matricula profesional. Requisito E-E-A-T, siempre visible en la ficha. */
+  licenseNumber: string;
   bio: string;
   avatarUrl: string;
   experienceYears: number;
-  inPersonConsultFeeArs: number; // Ej: 60.000 ARS
+  inPersonConsultFeeArs: number;
 }
 
 export interface ModuleItem {
@@ -52,7 +61,7 @@ export interface ModuleItem {
   reviewsCount: number;
   totalDurationHours: string;
   episodesCount: number;
-  priceArs: number; // 50.000 ARS o 15.000 ARS
+  priceArs: number;
   isFeatured?: boolean;
   badge?: string;
   thumbnailUrl: string;
@@ -61,6 +70,14 @@ export interface ModuleItem {
   keyLearningPoints: string[];
   episodes: Episode[];
   tags: string[];
+  /** Referencias bibliograficas que respaldan el modulo (E-E-A-T, Voice.md 3). */
+  references?: ClinicalReference[];
+}
+
+export interface ClinicalReference {
+  source: string;
+  detail: string;
+  year: number;
 }
 
 export interface FilterState {
@@ -69,4 +86,33 @@ export interface FilterState {
   contentType: ContentType | 'all';
   year: number | 'all';
   targetAudience: TargetAudience | 'all';
+}
+
+/** Transaccion registrada por el panel administrativo. */
+export interface Sale {
+  id: string;
+  moduleId: string;
+  moduleTitle: string;
+  buyerEmail: string;
+  amountArs: number;
+  method: string;
+  /** Fecha ISO de acreditacion */
+  processedAt: string;
+  /** Una beca es un acceso otorgado a mano, sin cobro. */
+  kind: 'pago' | 'beca';
+}
+
+/** Datos que el profesional carga al crear o editar un modulo. */
+export interface ModuleDraft {
+  title: string;
+  subtitle: string;
+  description: string;
+  condition: ConditionType;
+  contentType: ContentType;
+  targetAudience: TargetAudience;
+  priceArs: number;
+  thumbnailUrl: string;
+  videoUrl: string;
+  pdfTitle: string;
+  pdfUrl: string;
 }

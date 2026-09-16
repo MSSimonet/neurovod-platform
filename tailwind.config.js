@@ -4,40 +4,73 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        background: "#0B0F17",
-        surface: {
-          DEFAULT: "#121826",
-          elevated: "#1B2234",
-          border: "#26324A"
+        app: "#FAFAFA",
+        card: "#FFFFFF",
+        subtle: "#F1F5F9",
+        alt: "#E2E8F0",
+        ink: {
+          DEFAULT: "#0F172A",
+          secondary: "#334155",
+          muted: "#64748B",
+          inverse: "#FFFFFF",
         },
-        brand: {
-          teal: "#06B6D4",
-          emerald: "#10B981",
-          cyan: "#22D3EE",
-          indigo: "#6366F1"
-        }
+        accent: {
+          DEFAULT: "#0284C7",
+          hover: "#0369A1",
+          surface: "#F0F9FF",
+          border: "#BAE6FD",
+        },
+        ok: {
+          DEFAULT: "#059669",
+          surface: "#ECFDF5",
+        },
+        rule: {
+          DEFAULT: "#E2E8F0",
+          strong: "#CBD5E1",
+        },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        serif: ['"Instrument Serif"', 'Georgia', 'Times New Roman', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
+      borderRadius: {
+        none: '0',
+        xs: '2px',
+        sm: '4px',
+        DEFAULT: '4px',
+        md: '6px',
+      },
+      boxShadow: {
+        subtle: '0 1px 2px 0 rgba(15, 23, 42, 0.05)',
+        raised: '0 2px 6px -1px rgba(15, 23, 42, 0.08)',
+        overlay: '0 8px 24px -8px rgba(15, 23, 42, 0.18)',
+        none: 'none',
+      },
+      maxWidth: {
+        shell: '1240px',
+        prose: '68ch',
+      },
+      fontSize: {
+        '2xs': ['0.6875rem', { lineHeight: '1rem' }],
       },
       animation: {
-        'fade-in': 'fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-        'scale-in': 'scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+        'rise': 'rise 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+        'veil': 'veil 0.16s ease-out',
       },
       keyframes: {
-        fadeIn: {
+        rise: {
+          '0%': { opacity: '0', transform: 'translateY(6px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        veil: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        scaleIn: {
-          '0%': { opacity: '0', transform: 'scale(0.96)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
-        },
-      }
+      },
     },
   },
   plugins: [],
