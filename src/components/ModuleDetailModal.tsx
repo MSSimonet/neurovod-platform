@@ -219,7 +219,7 @@ export const ModuleDetailModal = () => {
                 <img
                   src={module.doctor.avatarUrl}
                   alt=""
-                  className="w-12 h-12 rounded-xs object-cover border border-rule"
+                  className="w-12 h-12 rounded-full object-cover border border-rule"
                 />
                 <div className="min-w-0">
                   <p className="text-[13px] font-semibold text-ink">{module.doctor.name}</p>

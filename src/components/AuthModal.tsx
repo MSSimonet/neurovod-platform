@@ -40,7 +40,7 @@ export const AuthModal = () => {
             <img
               src={user.avatarUrl}
               alt=""
-              className="w-14 h-14 rounded-xs object-cover border border-rule"
+              className="w-14 h-14 rounded-full object-cover border border-rule"
             />
             <div className="min-w-0">
               <h2 id="perfil" className="text-xl leading-tight">{user.name}</h2>

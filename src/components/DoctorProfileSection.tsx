@@ -77,7 +77,7 @@ export const DoctorProfileSection = () => {
               <img
                 src={leadDoctor.avatarUrl}
                 alt={`Retrato del ${leadDoctor.name}`}
-                className="w-14 h-14 rounded-xs object-cover border border-rule"
+                className="w-14 h-14 rounded-full object-cover border border-rule"
                 loading="lazy"
               />
               <div>
@@ -118,7 +118,7 @@ export const DoctorProfileSection = () => {
                   <div key={item.title} className="rule-cell flex gap-4 p-5">
                     <Icon className="w-4 h-4 mt-0.5 shrink-0 text-accent" aria-hidden="true" />
                     <div>
-                      <h3 className="text-base font-sans font-semibold text-ink">{item.title}</h3>
+                      <h3 className="text-lg leading-snug text-ink">{item.title}</h3>
                       <p className="mt-1 text-[13px] leading-relaxed text-ink-secondary">
                         {item.detail}
                       </p>

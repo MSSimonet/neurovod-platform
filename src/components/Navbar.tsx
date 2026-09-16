@@ -117,7 +117,7 @@ export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
                   <img
                     src={user.avatarUrl}
                     alt=""
-                    className="w-8 h-8 rounded-xs object-cover border border-rule-strong"
+                    className="w-8 h-8 rounded-full object-cover border border-rule-strong"
                   />
                   <span className="hidden xl:block text-left leading-tight">
                     <span className="block text-[13px] font-semibold text-ink">
