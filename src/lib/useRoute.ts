@@ -5,14 +5,14 @@ export type AppRoute = '/' | '/admin';
 /**
  * RUTEO PARA HOSTING ESTÁTICO
  *
- * El proyecto se publica en GitHub Pages, que sirve el sitio bajo un
- * subdirectorio (/neurovod-platform/) y no reescribe rutas desconocidas
- * hacia index.html. Por eso la forma canónica de la ruta es el hash
- * (#/admin): sobrevive al refresco, al enlace directo y al subdirectorio,
- * sin pedir configuración del servidor.
+ * La forma canónica de la ruta es el hash (#/admin) porque funciona en
+ * cualquier destino: sobrevive al refresco, al enlace directo y a un
+ * subdirectorio de publicación, sin pedir configuración del servidor.
  *
- * El pathname /admin se sigue aceptando al entrar, para hosts que sí
- * reescriben hacia index.html (Vercel, Netlify, el dev server de Vite).
+ * El pathname /admin también se acepta al entrar. En Vercel funciona
+ * gracias a la reescritura declarada en vercel.json, y en el servidor de
+ * desarrollo de Vite gracias a su fallback de aplicación de una sola
+ * página. Se descuenta BASE_URL para tolerar un subdirectorio.
  */
 
 /** Quita el subdirectorio de publicación del pathname. */

@@ -49,9 +49,10 @@ describe('useRoute al entrar por una URL', () => {
   });
 
   /**
-   * El sitio se publica en https://usuario.github.io/neurovod-platform/.
-   * Este es el caso que estaba roto: el pathname real incluye el
-   * subdirectorio y la comparación contra '/admin' nunca daba verdadera.
+   * Caso que estaba roto cuando el sitio se publicaba bajo un
+   * subdirectorio: el pathname real lo incluye y la comparación contra
+   * '/admin' nunca daba verdadera. Se conserva la cobertura para que el
+   * ruteo siga tolerando ese despliegue.
    */
   test('reconoce el panel dentro del subdirectorio de publicación', () => {
     situarEn('/neurovod-platform/#/admin');
