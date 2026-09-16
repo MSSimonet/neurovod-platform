@@ -93,7 +93,7 @@ export const ModuleCard = ({ module, index }: ModuleCardProps) => {
 
       {/* Pie de acceso */}
       <div className="mt-auto pt-4 px-5 pb-5">
-        <div className="flex items-center justify-between gap-3 border-t border-rule pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-3 border-t border-rule pt-4">
           {unlocked ? (
             <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ok">
               <Check className="w-3.5 h-3.5" aria-hidden="true" />

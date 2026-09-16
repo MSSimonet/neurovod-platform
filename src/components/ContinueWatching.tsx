@@ -53,7 +53,7 @@ export const ContinueWatching = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             <button
               onClick={() => setActiveVideoEpisode({ module: mod, episode })}
               className="btn btn-primary"
