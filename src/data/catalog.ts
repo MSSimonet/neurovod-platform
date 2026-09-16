@@ -46,7 +46,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 1: Qué es realmente el TDAH: La química de la atención",
         durationMinutes: 32,
         synopsis: "Superando el mito de la falta de voluntad. Entendiendo por qué a tu hijo le cuesta iniciar tareas aburridas pero puede pasar horas hiperfocalizado.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        videoUrl: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "c1-1", timeSeconds: 0, title: "00:00 Introducción médica y objetivos" },
@@ -65,7 +65,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 2: Rutinas predecibles y diseño del entorno doméstico",
         durationMinutes: 36,
         synopsis: "Estrategias de arquitectura ambiental: temporizadores visuales, checklist matutina y reducción de fricción antes de ir a la escuela.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        videoUrl: "https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "c2-1", timeSeconds: 0, title: "00:00 La trampa del recordatorio verbal continuo" },
@@ -83,7 +83,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 3: TDAH en el Aula y Diálogo con los Docentes",
         durationMinutes: 34,
         synopsis: "Cómo coordinar con el colegio sin confrontar. Adecuaciones metodológicas prácticas: descansos cerebrales, ubicación en el banco y evaluaciones fragmentadas.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "c3-1", timeSeconds: 0, title: "00:00 Construyendo alianza con maestros" },
@@ -100,7 +100,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 4: Tratamiento Farmacológico: Respuestas Claras",
         durationMinutes: 38,
         synopsis: "Metilfenidato, atomoxetina y opciones actuales. Indicaciones precisas, control de efectos secundarios, curvas de acción y mitos frecuentes.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        videoUrl: "https://media.w3.org/2010/05/bunny/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "c4-1", timeSeconds: 0, title: "00:00 ¿Cuándo se justifica la medicación?" },
@@ -114,7 +114,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 5: Regulación Emocional y Autoestima en el Niño",
         durationMinutes: 25,
         synopsis: "Reparando el impacto de las críticas continuas. Cómo fomentar el autoconcepto positivo, validar la frustración y prevenir el oposicionismo.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        videoUrl: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "c5-1", timeSeconds: 0, title: "00:00 La herida de la desaprobación crónica" },
@@ -159,7 +159,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 1: Berrinche vs Meltdown: Diferencias neurológicas clave",
         durationMinutes: 28,
         synopsis: "Por qué exigir 'pórtate bien' durante un colapso sensorial empeora la crisis. Explicación biológica del secuestro amigdalino en TEA.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        videoUrl: "https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "tc1-1", timeSeconds: 0, title: "00:00 Presentación y errores habituales" },
@@ -176,7 +176,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 2: Creando la Dieta Sensorial y Zonas de Calma en Casa",
         durationMinutes: 31,
         synopsis: "Herramientas propioceptivas, chalecos de peso, auriculares de cancelación y carpas de calma para regular el umbral antes del desborde.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1484820540004-14229fe36ca4?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "tc2-1", timeSeconds: 0, title: "00:00 Concepto de dieta sensorial" },
@@ -189,7 +189,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 3: Anticipación y Apoyos Visuales en Transiciones",
         durationMinutes: 30,
         synopsis: "Cómo las transiciones no planificadas disparan la ansiedad en autismo y cómo los pictogramas y temporizadores reducen el estrés en un 80%.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        videoUrl: "https://media.w3.org/2010/05/bunny/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "tc3-1", timeSeconds: 0, title: "00:00 Por qué el cerebro autista necesita predictibilidad" },
@@ -202,7 +202,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 4: Protocolo de Seguridad Durante el Colapso",
         durationMinutes: 29,
         synopsis: "Postura del adulto, reducción de estímulos lumínicos y sonoros, qué NO decir y cómo proteger de autolesiones sin violencia física.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        videoUrl: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1484820540004-14229fe36ca4?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "tc4-1", timeSeconds: 0, title: "00:00 Regla de oro: Menos palabras, más presencia" },
@@ -215,7 +215,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 5: La Fase de Recuperación y Cuidado del Cuidador",
         durationMinutes: 32,
         synopsis: "Recuperación fisiológica post-descarga. Cuidado de la salud mental de padres y madres: burnout y culpa parental.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        videoUrl: "https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "tc5-1", timeSeconds: 0, title: "00:00 Cuándo volver a hablar de lo sucedido" },
@@ -256,7 +256,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Masterclass Intensiva: Protocolo Nocturno de 4 Fases",
         durationMinutes: 48,
         synopsis: "Paso a paso para estructurar la última hora y media antes de acostarse: reducción de estímulos, temperatura ambiental, aromaterapia y transición suave al descanso.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1566004100631-35d015d6a491?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "gs-1", timeSeconds: 0, title: "00:00 Fisiología del sueño neurodivergente" },
@@ -300,7 +300,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 1: El cerebro adolescente con TDAH",
         durationMinutes: 28,
         synopsis: "Maduración retrasada de la corteza prefrontal y búsqueda de dopamina.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        videoUrl: "https://media.w3.org/2010/05/bunny/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "ta-1", timeSeconds: 0, title: "00:00 Transformaciones neurobiológicas" }]
       },
@@ -310,7 +310,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 2: Organización y Estudio en Secundaria",
         durationMinutes: 30,
         synopsis: "Herramientas digitales: Notion, Google Calendar y técnicas de estudio no lineales.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        videoUrl: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "ta-2", timeSeconds: 0, title: "00:00 Métodos de estudio adaptados" }]
       },
@@ -320,7 +320,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 3: Pantallas, Redes y Videojuegos",
         durationMinutes: 27,
         synopsis: "Límites saludables acordados sin batallas campales.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        videoUrl: "https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "ta-3", timeSeconds: 0, title: "00:00 Dopamina y pantallas" }]
       },
@@ -330,7 +330,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 4: Adherencia a la Medicación y Autonomía",
         durationMinutes: 26,
         synopsis: "El rol del joven en su propio tratamiento médico.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "ta-4", timeSeconds: 0, title: "00:00 Consulta médica conjunta" }]
       },
@@ -340,7 +340,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 5: Habilidades Sociales e Impulsividad",
         durationMinutes: 24,
         synopsis: "Prevención de aislamiento y construcción de vínculos seguros.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        videoUrl: "https://media.w3.org/2010/05/bunny/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "ta-5", timeSeconds: 0, title: "00:00 Amistades y neurodivergencia" }]
       }
@@ -377,7 +377,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Guía en Video: La Escalera de Tolerancia de Texturas",
         durationMinutes: 35,
         synopsis: "Ejemplos en vivo de exposición gradual a texturas crujientes, blandas y húmedas sin forzar la ingesta.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        videoUrl: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "sa-1", timeSeconds: 0, title: "00:00 El componente sensorial de la comida" },
@@ -420,7 +420,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Sesión Plenaria 1: Diagnóstico Oportuno de TEA en Primera Infancia",
         durationMinutes: 65,
         synopsis: "Pistas tempranas de comunicación social, contacto visual y juego simbólico.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        videoUrl: "https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "cg-1", timeSeconds: 0, title: "00:00 Apertura y conferencia central" }]
       },
@@ -430,7 +430,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Sesión Plenaria 2: Autismo Femenino y Masking",
         durationMinutes: 60,
         synopsis: "Por qué tantas niñas y mujeres reciben diagnósticos tardíos en la adolescencia o adultez.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "cg-2", timeSeconds: 0, title: "00:00 Características del camuflaje social" }]
       },
@@ -440,7 +440,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Sesión Plenaria 3: Mesa Redonda sobre Farmacología en TDAH",
         durationMinutes: 70,
         synopsis: "Debate interdisciplinario entre neurólogos, psiquiatras y psicopedagogos.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        videoUrl: "https://media.w3.org/2010/05/bunny/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "cg-3", timeSeconds: 0, title: "00:00 Casos clínicos reales" }]
       },
@@ -450,7 +450,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Sesión Plenaria 4: Conclusiones y Preguntas de la Audiencia",
         durationMinutes: 65,
         synopsis: "Respuestas a inquietudes directas planteadas por familiares y profesionales.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        videoUrl: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "cg-4", timeSeconds: 0, title: "00:00 Preguntas frecuentes respondidas" }]
       }
@@ -486,7 +486,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 1: Fundamentos de la Comunicación Aumentativa",
         durationMinutes: 26,
         synopsis: "Derribando el miedo: los apoyos estimulan el desarrollo del lenguaje oral.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        videoUrl: "https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "saac-c1", timeSeconds: 0, title: "00:00 Introducción a los SAAC" }]
       },
@@ -496,7 +496,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 2: Creación de Tableros de Elección",
         durationMinutes: 25,
         synopsis: "Comida, juego y descanso: dando voz y autonomía a través de imágenes.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1484820540004-14229fe36ca4?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "saac-c2", timeSeconds: 0, title: "00:00 Materiales y selección de símbolos" }]
       },
@@ -506,7 +506,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 3: Transiciones sin Frustración",
         durationMinutes: 24,
         synopsis: "La secuencia 'Primero... Luego...' para disminuir la resistencia al cambio.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        videoUrl: "https://media.w3.org/2010/05/bunny/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "saac-c3", timeSeconds: 0, title: "00:00 Estructura Primero/Luego" }]
       },
@@ -516,7 +516,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 4: Modelado en el Contexto Natural del Juego",
         durationMinutes: 28,
         synopsis: "Cómo enseñar palabras funcionales mientras compartimos actividades placenteras.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        videoUrl: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1484820540004-14229fe36ca4?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "saac-c4", timeSeconds: 0, title: "00:00 Modelado en situaciones reales" }]
       },
@@ -526,7 +526,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Episodio 5: Aplicaciones y Dispositivos Electrónicos",
         durationMinutes: 27,
         synopsis: "Cuándo dar el salto a comunicadores dinámicos y tablets dedicadas.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        videoUrl: "https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=800&auto=format&fit=crop",
         chapters: [{ id: "saac-c5", timeSeconds: 0, title: "00:00 Apps recomendadas" }]
       }
@@ -563,7 +563,7 @@ export const sampleModules: ModuleItem[] = [
         title: "Clase Rápida: El Descenso Dopaminérgico Suave",
         durationMinutes: 32,
         synopsis: "Cómo aplicar el método de 3 pasos para apagar los dispositivos electrónicos sin discusiones.",
-        videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
         thumbnailUrl: "https://images.unsplash.com/photo-1476703993599-0035a21b17a9?q=80&w=800&auto=format&fit=crop",
         chapters: [
           { id: "dp-1", timeSeconds: 0, title: "00:00 La trampa neuroquímica de los videojuegos" },

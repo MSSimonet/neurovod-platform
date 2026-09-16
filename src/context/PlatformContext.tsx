@@ -122,6 +122,13 @@ const writeStorage = (key: string, value: unknown): void => {
   }
 };
 
+/**
+ * Video de relleno para una clase cargada sin origen propio. Alojado por el
+ * W3C como material de referencia de la especificación HTML5. El bucket de
+ * muestras de Google que se usaba antes dejó de ser público y devuelve 403.
+ */
+const PLACEHOLDER_VIDEO_URL = 'https://media.w3.org/2010/05/bunny/trailer.mp4';
+
 const seedSales: Sale[] = [
   {
     id: 'MP-884120933',
@@ -157,7 +164,17 @@ const seedSales: Sale[] = [
 
 const PlatformContext = createContext<PlatformContextType | undefined>(undefined);
 
-/** Reconstruye las imagenes de origen al releer modulos del almacenamiento local. */
+/** Origen de video que Google dejo de servir publicamente y hoy responde 403. */
+const DEAD_VIDEO_HOST = 'commondatastorage.googleapis.com';
+
+/**
+ * Reconstruye las imagenes de origen al releer modulos del almacenamiento local.
+ *
+ * Tambien repara los videos apuntados al bucket caido. Sin esto, quien ya visito
+ * el sitio conserva las URLs muertas en su navegador y la correccion nunca le
+ * llega. Solo se reemplazan esas: un origen cargado desde el panel medico se
+ * respeta, para no pisar el trabajo del profesional.
+ */
 const hydrateModules = (stored: ModuleItem[]): ModuleItem[] =>
   stored.map((mod) => {
     const source = sampleModules.find((s) => s.id === mod.id);
@@ -166,10 +183,16 @@ const hydrateModules = (stored: ModuleItem[]): ModuleItem[] =>
       ...mod,
       thumbnailUrl: source.thumbnailUrl,
       heroBannerUrl: source.heroBannerUrl,
-      episodes: mod.episodes.map((ep, index) => ({
-        ...ep,
-        thumbnailUrl: source.episodes[index]?.thumbnailUrl ?? ep.thumbnailUrl,
-      })),
+      episodes: mod.episodes.map((ep, index) => {
+        const fromSource = source.episodes[index];
+        return {
+          ...ep,
+          thumbnailUrl: fromSource?.thumbnailUrl ?? ep.thumbnailUrl,
+          videoUrl: ep.videoUrl.includes(DEAD_VIDEO_HOST)
+            ? fromSource?.videoUrl ?? PLACEHOLDER_VIDEO_URL
+            : ep.videoUrl,
+        };
+      }),
     };
   });
 
@@ -445,9 +468,7 @@ export const PlatformProvider = ({ children }: { children: React.ReactNode }) =>
             title: `Episodio ${nextNumber}: ${data.title}`,
             durationMinutes: data.durationMinutes || 25,
             synopsis: data.synopsis || 'Clase clínica cargada desde el panel del profesional.',
-            videoUrl:
-              data.videoUrl ||
-              'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+            videoUrl: data.videoUrl || PLACEHOLDER_VIDEO_URL,
             thumbnailUrl: mod.thumbnailUrl,
             chapters: [
               { id: `c-${stamp}-1`, timeSeconds: 0, title: '00:00 Apertura de la clase' },
