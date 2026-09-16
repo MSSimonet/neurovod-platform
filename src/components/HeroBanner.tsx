@@ -43,10 +43,11 @@ export const HeroBanner = () => {
           <div className="lg:col-span-7 py-10 lg:py-16 lg:pr-12 lg:border-r border-rule">
             <p className="kicker">Compendio clínico en video · Edición 2026</p>
 
-            <h1 className="mt-5 text-[2.5rem] sm:text-6xl lg:text-[4.25rem] leading-[0.98]">
-              Lo que explico en consulta,
-              <br />
-              <span className="italic">ordenado para que puedas volver a verlo.</span>
+            {/* Un solo estilo tipográfico. El corte de estilo a mitad de frase
+                competía con la lectura y la cursiva perdía nitidez a este cuerpo.
+                El carácter editorial ya lo aporta la serif. */}
+            <h1 className="mt-5 text-[2.5rem] sm:text-6xl lg:text-[4.25rem] leading-[1.02]">
+              Lo que explico en consulta, ordenado para que puedas volver a verlo.
             </h1>
 
             <p className="mt-6 max-w-prose text-[15px] leading-relaxed text-ink-secondary">
