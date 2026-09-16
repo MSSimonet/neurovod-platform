@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { usePlatform } from '../context/PlatformContext';
 import { ConditionType } from '../types';
 import { scrollToCatalog } from '../lib/scrollToCatalog';
@@ -20,14 +20,6 @@ const CONDITION_LINKS: { label: string; value: ConditionType | 'all' }[] = [
 export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
   const { filters, setFilters, purchasedModuleIds, user, setIsAuthModalOpen, navigate } =
     usePlatform();
-  const [isCondensed, setIsCondensed] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setIsCondensed(window.scrollY > 48);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   const goToCondition = (value: ConditionType | 'all') => {
     setFilters((prev) => ({ ...prev, condition: value }));
     scrollToCatalog();
@@ -35,22 +27,6 @@ export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
 
   return (
     <header className="sticky top-0 z-40 bg-card border-b border-rule">
-      {/* Cabecera de publicación: la credencial a la vista, se pliega al bajar */}
-      <div
-        className={`hidden md:block overflow-hidden border-b border-rule bg-subtle transition-all duration-200 ${
-          isCondensed ? 'max-h-0 opacity-0' : 'max-h-10 opacity-100'
-        }`}
-      >
-        <div className="shell flex items-center justify-between gap-4 h-9 text-2xs text-ink-muted">
-          <p className="tabular truncate">
-            DR. JULIÁN ROSSI · NEUROLOGÍA INFANTIL · MN 142.890 · CONSULTORIO CABA
-          </p>
-          <p className="tabular hidden lg:block shrink-0">
-            CONTENIDO CLÍNICO VERIFICADO · EDICIÓN 2026
-          </p>
-        </div>
-      </div>
-
       {/* Fila principal: identidad y controles del lector */}
       <div className="shell">
         <div className="flex items-center justify-between gap-4 h-16">
