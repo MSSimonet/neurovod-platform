@@ -22,8 +22,11 @@ describe('portada del compendio', () => {
   test('cuenta los programas y las clases disponibles', () => {
     renderConPlataforma(<App />);
 
-    expect(screen.getAllByText(/programas clínicos/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/clases en video/i).length).toBeGreaterThan(0);
+    // Los indicadores van en una sola línea de filete bajo el buscador.
+    const indicadores = screen.getByText(/\d+ programas · \d+ clases/i);
+    expect(indicadores).toBeInTheDocument();
+    expect(indicadores).toHaveTextContent(/h de material/i);
+    expect(indicadores).toHaveTextContent(/años de consultorio/i);
   });
 
   test('ordena el catálogo en secciones clínicas numeradas', () => {
