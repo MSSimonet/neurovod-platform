@@ -2,19 +2,44 @@ import { useCallback, useEffect, useState } from 'react';
 
 export type AppRoute = '/' | '/admin';
 
-const readRoute = (): AppRoute => {
-  if (typeof window === 'undefined') return '/';
-  const path = window.location.pathname.replace(/\/+$/, '');
-  const hash = window.location.hash.replace(/^#/, '').replace(/\/+$/, '');
-  if (path === '/admin' || hash === '/admin') return '/admin';
-  return '/';
+/**
+ * RUTEO PARA HOSTING ESTÁTICO
+ *
+ * El proyecto se publica en GitHub Pages, que sirve el sitio bajo un
+ * subdirectorio (/neurovod-platform/) y no reescribe rutas desconocidas
+ * hacia index.html. Por eso la forma canónica de la ruta es el hash
+ * (#/admin): sobrevive al refresco, al enlace directo y al subdirectorio,
+ * sin pedir configuración del servidor.
+ *
+ * El pathname /admin se sigue aceptando al entrar, para hosts que sí
+ * reescriben hacia index.html (Vercel, Netlify, el dev server de Vite).
+ */
+
+/** Quita el subdirectorio de publicación del pathname. */
+const stripBase = (pathname: string): string => {
+  const base = import.meta.env.BASE_URL ?? '/';
+  // Con base relativa ('./') no hay prefijo absoluto que descontar.
+  const prefix = base.startsWith('/') ? base.replace(/\/+$/, '') : '';
+  const path = prefix && pathname.startsWith(prefix) ? pathname.slice(prefix.length) : pathname;
+  return path.replace(/\/+$/, '') || '/';
 };
 
-/**
- * Ruteo minimo sobre la History API. Evita sumar una dependencia de router
- * para dos vistas. Soporta /admin y el fallback #/admin para hostings
- * estaticos que no reescriben rutas hacia index.html.
- */
+/** Path del sitio sin la ruta de la aplicación. Sirve para volver al inicio. */
+const homeHref = (): string => {
+  const base = import.meta.env.BASE_URL ?? '/';
+  const pathname = stripBase(window.location.pathname) === '/admin' ? base : window.location.pathname;
+  return `${pathname}${window.location.search}`;
+};
+
+const readRoute = (): AppRoute => {
+  if (typeof window === 'undefined') return '/';
+
+  const hash = window.location.hash.replace(/^#/, '').replace(/\/+$/, '');
+  if (hash) return hash === '/admin' ? '/admin' : '/';
+
+  return stripBase(window.location.pathname) === '/admin' ? '/admin' : '/';
+};
+
 export const useRoute = (): { route: AppRoute; navigate: (to: AppRoute) => void } => {
   const [route, setRoute] = useState<AppRoute>(readRoute);
 
@@ -29,9 +54,9 @@ export const useRoute = (): { route: AppRoute; navigate: (to: AppRoute) => void 
   }, []);
 
   const navigate = useCallback((to: AppRoute) => {
-    if (readRoute() !== to) {
-      window.history.pushState({}, '', to);
-    }
+    // Siempre relativo al documento actual: nunca se sale del subdirectorio.
+    const target = to === '/admin' ? '#/admin' : homeHref();
+    window.history.pushState({}, '', target);
     setRoute(to);
     window.scrollTo({ top: 0 });
   }, []);
