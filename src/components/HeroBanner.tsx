@@ -1,6 +1,7 @@
 import React from 'react';
 import { usePlatform } from '../context/PlatformContext';
 import { leadDoctor } from '../data/catalog';
+import { scrollToCatalog } from '../lib/scrollToCatalog';
 import { Search, ShieldCheck } from 'lucide-react';
 
 export const HeroBanner = () => {
@@ -22,7 +23,7 @@ export const HeroBanner = () => {
 
   const goToCatalog = (event: React.FormEvent) => {
     event.preventDefault();
-    document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToCatalog();
   };
 
   return (

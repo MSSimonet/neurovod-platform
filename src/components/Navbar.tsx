@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { usePlatform } from '../context/PlatformContext';
 import { ConditionType } from '../types';
-import { Search, SlidersHorizontal, X, BookMarked, Lock } from 'lucide-react';
+import { scrollToCatalog } from '../lib/scrollToCatalog';
+import { Search, SlidersHorizontal, X, BookMarked } from 'lucide-react';
 
 interface NavbarProps {
   onOpenFilters: () => void;
@@ -29,59 +30,40 @@ export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
 
   const goToCondition = (value: ConditionType | 'all') => {
     setFilters((prev) => ({ ...prev, condition: value }));
-    document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToCatalog();
   };
 
   return (
     <header className="sticky top-0 z-40 bg-card border-b border-rule">
-      {/* Cabecera de publicación: credencial siempre a la vista (E-E-A-T) */}
+      {/* Cabecera de publicación: la credencial a la vista, se pliega al bajar */}
       <div
         className={`hidden md:block overflow-hidden border-b border-rule bg-subtle transition-all duration-200 ${
           isCondensed ? 'max-h-0 opacity-0' : 'max-h-10 opacity-100'
         }`}
       >
-        <div className="shell flex items-center justify-between h-9 text-2xs text-ink-muted">
-          <p className="tabular">
+        <div className="shell flex items-center justify-between gap-4 h-9 text-2xs text-ink-muted">
+          <p className="tabular truncate">
             DR. JULIÁN ROSSI · NEUROLOGÍA INFANTIL · MN 142.890 · CONSULTORIO CABA
           </p>
-          <p className="tabular">CONTENIDO CLÍNICO VERIFICADO · EDICIÓN 2026</p>
+          <p className="tabular hidden lg:block shrink-0">
+            CONTENIDO CLÍNICO VERIFICADO · EDICIÓN 2026
+          </p>
         </div>
       </div>
 
+      {/* Fila principal: identidad y controles del lector */}
       <div className="shell">
-        <div className="flex items-center justify-between gap-6 h-16">
-          {/* Logotipo */}
+        <div className="flex items-center justify-between gap-4 h-16">
           <button
             onClick={() => navigate('/')}
             className="flex items-baseline gap-2 text-left shrink-0"
           >
             <span className="font-serif text-2xl leading-none text-ink">NeuroVOD</span>
-            <span className="kicker">Médica</span>
+            <span className="kicker hidden sm:inline">Médica</span>
           </button>
 
-          {/* Navegación por condición clínica */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Condiciones clínicas">
-            {CONDITION_LINKS.map((link) => {
-              const isActive = filters.condition === link.value;
-              return (
-                <button
-                  key={link.value}
-                  onClick={() => goToCondition(link.value)}
-                  className={`px-3 py-1.5 text-[13px] font-medium rounded-xs transition-colors ${
-                    isActive
-                      ? 'bg-accent-surface text-accent'
-                      : 'text-ink-secondary hover:bg-subtle hover:text-ink'
-                  }`}
-                >
-                  {link.label}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Controles */}
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="relative hidden sm:block">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="relative hidden sm:block min-w-0">
               <Search
                 className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ink-muted"
                 aria-hidden="true"
@@ -92,7 +74,7 @@ export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
                 onChange={(e) => setFilters((prev) => ({ ...prev, searchQuery: e.target.value }))}
                 placeholder="Buscar síntoma o tema"
                 aria-label="Buscar en el catálogo clínico"
-                className="field w-48 xl:w-60 pl-8 pr-8 py-2 text-[13px]"
+                className="field w-44 lg:w-56 pl-8 pr-8 py-2 text-[13px]"
               />
               {filters.searchQuery && (
                 <button
@@ -109,7 +91,7 @@ export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
               onClick={onOpenFilters}
               aria-expanded={isFiltersOpen}
               aria-label="Filtros del catálogo"
-              className={`btn ${isFiltersOpen ? 'btn-primary' : 'btn-secondary'} px-3 py-2`}
+              className={`btn ${isFiltersOpen ? 'btn-primary' : 'btn-secondary'} px-3 py-2 shrink-0`}
             >
               <SlidersHorizontal className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="hidden sm:inline">Filtros</span>
@@ -117,26 +99,17 @@ export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
 
             <button
               onClick={() => goToCondition('all')}
-              className="btn btn-ghost px-3 py-2 hidden md:inline-flex"
-              title="Módulos con acceso habilitado"
+              className="btn btn-ghost px-3 py-2 shrink-0"
+              aria-label={`Mi biblioteca, ${purchasedModuleIds.length} módulos habilitados`}
             >
               <BookMarked className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Mi biblioteca</span>
-              <span className="tabular text-2xs text-ink-muted">({purchasedModuleIds.length})</span>
-            </button>
-
-            <button
-              onClick={() => navigate('/admin')}
-              className="btn btn-ghost px-3 py-2 hidden xl:inline-flex"
-              title="Panel privado del profesional"
-            >
-              <Lock className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Panel médico</span>
+              <span className="hidden lg:inline">Mi biblioteca</span>
+              <span className="tabular text-2xs text-ink-muted">{purchasedModuleIds.length}</span>
             </button>
 
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="flex items-center gap-2 pl-2 border-l border-rule"
+              className="flex items-center gap-2 pl-2 border-l border-rule shrink-0"
               aria-label={user ? `Perfil de ${user.name}` : 'Ingresar a la plataforma'}
             >
               {user ? (
@@ -158,6 +131,35 @@ export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
               )}
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Barra de secciones al modo de un diario. Se desplaza en pantallas angostas,
+          así la navegación por condición también existe en el celular. */}
+      <div className="border-t border-rule">
+        <div className="shell">
+          <nav
+            className="flex items-center gap-1 h-11 overflow-x-auto no-scrollbar"
+            aria-label="Condiciones clínicas"
+          >
+            {CONDITION_LINKS.map((link) => {
+              const isActive = filters.condition === link.value;
+              return (
+                <button
+                  key={link.value}
+                  onClick={() => goToCondition(link.value)}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`px-3 py-1.5 text-[13px] font-medium rounded-xs whitespace-nowrap shrink-0 transition-colors ${
+                    isActive
+                      ? 'bg-accent-surface text-accent'
+                      : 'text-ink-secondary hover:bg-subtle hover:text-ink'
+                  }`}
+                >
+                  {link.label}
+                </button>
+              );
+            })}
+          </nav>
         </div>
       </div>
     </header>

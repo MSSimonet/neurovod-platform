@@ -246,6 +246,13 @@
     background: rgba(15, 23, 42, 0.55);
   }
 
+  /* ---------- Anclaje bajo la cabecera fija ----------
+     La cabecera pegajosa mide 110px. Sin este margen, saltar al catalogo
+     deja el titulo de la seccion escondido detras de ella.            */
+  #catalogo {
+    scroll-margin-top: 120px;
+  }
+
   /* ---------- Barra de progreso lineal ---------- */
   .progress-track {
     height: 3px;

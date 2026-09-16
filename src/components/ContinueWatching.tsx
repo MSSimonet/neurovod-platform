@@ -43,8 +43,10 @@ export const ContinueWatching = () => {
             <p className="kicker">
               Trayecto activo · {progress.percent}% completado · restan {formatMinutes(remainingMinutes)}
             </p>
-            <h2 className="mt-1.5 text-xl leading-snug truncate">{episode.title}</h2>
-            <p className="mt-1 text-[13px] text-ink-secondary truncate">{mod.title}</p>
+            {/* Dos líneas antes de recortar: el título de la clase es el dato que
+                la familia necesita leer entero para saber dónde quedó. */}
+            <h2 className="mt-1.5 text-xl leading-snug line-clamp-2">{episode.title}</h2>
+            <p className="mt-1 text-[13px] text-ink-secondary line-clamp-1">{mod.title}</p>
 
             <div className="progress-track mt-3 max-w-md">
               <div className="progress-fill" style={{ width: `${progress.percent}%` }} />

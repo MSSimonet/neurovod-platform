@@ -1,6 +1,7 @@
 import React from 'react';
 import { usePlatform } from '../context/PlatformContext';
 import { ConditionType } from '../types';
+import { scrollToCatalog } from '../lib/scrollToCatalog';
 import { ArrowRight } from 'lucide-react';
 
 interface CompassEntry {
@@ -56,7 +57,7 @@ export const ClinicalCompass = () => {
       return;
     }
     setFilters((prev) => ({ ...prev, condition: entry.fallbackCondition, searchQuery: '' }));
-    document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToCatalog();
   };
 
   return (
