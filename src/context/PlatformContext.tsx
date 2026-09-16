@@ -1,63 +1,91 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ModuleItem, Episode, FilterState } from '../types';
-import { sampleModules } from '../data/catalog';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import confetti from 'canvas-confetti';
+import {
+  ModuleItem,
+  Episode,
+  EpisodeResource,
+  FilterState,
+  ModuleDraft,
+  Sale,
+} from '../types';
+import { sampleModules, leadDoctor } from '../data/catalog';
+import { AppRoute, useRoute } from '../lib/useRoute';
+
+export type UserRole = 'Padre / Madre' | 'Docente' | 'Terapeuta' | 'Médico / Administrador';
 
 export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  role: 'Padre / Madre' | 'Docente' | 'Terapeuta' | 'Médico / Administrador';
+  role: UserRole;
   avatarUrl: string;
   childProfile?: string;
 }
 
+export interface WatchEntry {
+  seconds: number;
+  percent: number;
+  completed: boolean;
+}
+
 interface PlatformContextType {
+  // Catalogo y accesos
   modules: ModuleItem[];
   purchasedModuleIds: string[];
-  purchaseModule: (moduleId: string) => void;
   isPurchased: (moduleId: string) => boolean;
-  
-  // User Authentication
+  purchaseModule: (moduleId: string) => void;
+
+  // Ventas y accesos manuales
+  sales: Sale[];
+  registerSale: (sale: Omit<Sale, 'id'>) => void;
+  grantManualAccess: (moduleId: string, email: string) => void;
+  revokeAccess: (moduleId: string) => void;
+
+  // Sesion
   user: UserProfile | null;
-  login: (role?: 'Padre / Madre' | 'Docente' | 'Terapeuta' | 'Médico / Administrador') => void;
+  login: (role?: UserRole) => void;
   logout: () => void;
   isAuthModalOpen: boolean;
   setIsAuthModalOpen: (open: boolean) => void;
 
-  // Admin Section
-  isAdminOpen: boolean;
-  setIsAdminOpen: (open: boolean) => void;
+  // Navegacion
+  route: AppRoute;
+  navigate: (to: AppRoute) => void;
+
+  // Administracion del catalogo
+  createModule: (draft: ModuleDraft) => void;
+  updateModule: (moduleId: string, draft: ModuleDraft) => void;
+  deleteModule: (moduleId: string) => void;
   updateModulePrice: (moduleId: string, newPriceArs: number) => void;
   updateDoctorConsultFee: (newFeeArs: number) => void;
   reorderEpisode: (moduleId: string, episodeIndex: number, direction: 'up' | 'down') => void;
-  addEpisode: (moduleId: string, newEp: { title: string; durationMinutes: number; synopsis: string; videoUrl: string }) => void;
+  addEpisode: (
+    moduleId: string,
+    newEp: { title: string; durationMinutes: number; synopsis: string; videoUrl: string },
+  ) => void;
+  updateEpisodeVideoUrl: (moduleId: string, episodeId: string, videoUrl: string) => void;
   deleteEpisode: (moduleId: string, episodeId: string) => void;
-  addPdfResource: (moduleId: string, episodeId: string, resource: { title: string; type: 'pdf' | 'checklist' | 'guide'; size: string }) => void;
+  addPdfResource: (moduleId: string, episodeId: string, resource: EpisodeResource) => void;
   deletePdfResource: (moduleId: string, episodeId: string, resourceTitle: string) => void;
 
-  // Modals & Navigation
+  // Ventanas de contenido
   activeDetailModule: ModuleItem | null;
   setActiveDetailModule: (mod: ModuleItem | null) => void;
-  
   activeVideoEpisode: { module: ModuleItem; episode: Episode } | null;
   setActiveVideoEpisode: (data: { module: ModuleItem; episode: Episode } | null) => void;
-  
   activeCheckoutModule: ModuleItem | null;
   setActiveCheckoutModule: (mod: ModuleItem | null) => void;
-  
-  // Watch Progress
-  watchProgress: Record<string, { seconds: number; percent: number; completed: boolean }>;
+
+  // Progreso de visualizacion
+  watchProgress: Record<string, WatchEntry>;
   updateWatchProgress: (episodeId: string, seconds: number, totalSeconds: number) => void;
-  
-  // Filters
+
+  // Filtros
   filters: FilterState;
   setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
   resetFilters: () => void;
-  activeCategory: string;
-  setActiveCategory: (cat: string) => void;
 
-  // Demo Presentation Tools
+  // Herramientas de demostracion
   resetDemoPurchases: () => void;
   unlockAllDemo: () => void;
 }
@@ -70,328 +98,486 @@ const defaultFilters: FilterState = {
   targetAudience: 'all',
 };
 
+const STORAGE = {
+  modules: 'neurovod_custom_modules',
+  purchases: 'neurovod_purchases',
+  progress: 'neurovod_progress',
+  sales: 'neurovod_sales',
+} as const;
+
+const readStorage = <T,>(key: string, fallback: T): T => {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? (JSON.parse(saved) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const writeStorage = (key: string, value: unknown): void => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`No se pudo guardar "${key}" en el almacenamiento local.`, error);
+  }
+};
+
+const seedSales: Sale[] = [
+  {
+    id: 'MP-884120933',
+    moduleId: 'tdah-infancia-integral',
+    moduleTitle: 'Manejo Integral del TDAH en la Infancia',
+    buyerEmail: 'lucia.ferrer@gmail.com',
+    amountArs: 50000,
+    method: 'Dinero en cuenta de Mercado Pago',
+    processedAt: '2026-09-12T13:24:00.000Z',
+    kind: 'pago',
+  },
+  {
+    id: 'MP-884118207',
+    moduleId: 'guia-sueno-neurodivergente',
+    moduleTitle: 'Guía Rápida: Higiene del Sueño en Neurodivergentes',
+    buyerEmail: 'martin.aguirre@outlook.com',
+    amountArs: 15000,
+    method: 'Tarjeta en 3 cuotas sin interes',
+    processedAt: '2026-09-11T19:05:00.000Z',
+    kind: 'pago',
+  },
+  {
+    id: 'BECA-000041',
+    moduleId: 'autismo-desregulacion-colapsos',
+    moduleTitle: 'Autismo (TEA): Desregulación y Colapsos Sensoriales',
+    buyerEmail: 'equipo.orientacion@escuela14.edu.ar',
+    amountArs: 0,
+    method: 'Acceso otorgado por el profesional',
+    processedAt: '2026-09-09T10:40:00.000Z',
+    kind: 'beca',
+  },
+];
+
 const PlatformContext = createContext<PlatformContextType | undefined>(undefined);
 
-export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [modules, setModules] = useState<ModuleItem[]>(() => {
-    try {
-      const saved = localStorage.getItem('neurovod_custom_modules');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        return parsed.map((m: ModuleItem) => {
-          const sample = sampleModules.find(s => s.id === m.id);
-          if (sample) {
-            return {
-              ...m,
-              thumbnailUrl: sample.thumbnailUrl,
-              heroBannerUrl: sample.heroBannerUrl,
-              episodes: m.episodes.map((ep, idx) => ({
-                ...ep,
-                thumbnailUrl: sample.episodes[idx]?.thumbnailUrl || ep.thumbnailUrl
-              }))
-            };
-          }
-          return m;
-        });
-      }
-      return sampleModules;
-    } catch {
-      return sampleModules;
-    }
+/** Reconstruye las imagenes de origen al releer modulos del almacenamiento local. */
+const hydrateModules = (stored: ModuleItem[]): ModuleItem[] =>
+  stored.map((mod) => {
+    const source = sampleModules.find((s) => s.id === mod.id);
+    if (!source) return mod;
+    return {
+      ...mod,
+      thumbnailUrl: source.thumbnailUrl,
+      heroBannerUrl: source.heroBannerUrl,
+      episodes: mod.episodes.map((ep, index) => ({
+        ...ep,
+        thumbnailUrl: source.episodes[index]?.thumbnailUrl ?? ep.thumbnailUrl,
+      })),
+    };
   });
 
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+const buildEpisodeFromDraft = (moduleId: string, draft: ModuleDraft): Episode => ({
+  id: `${moduleId}-ep-1`,
+  episodeNumber: 1,
+  title: `Episodio 1: ${draft.title}`,
+  durationMinutes: 35,
+  synopsis: draft.subtitle || 'Clase clínica cargada desde el panel del profesional.',
+  videoUrl: draft.videoUrl,
+  thumbnailUrl: draft.thumbnailUrl,
+  chapters: [
+    { id: `${moduleId}-c1`, timeSeconds: 0, title: '00:00 Apertura de la clase' },
+    { id: `${moduleId}-c2`, timeSeconds: 420, title: '07:00 Puntos clínicos centrales' },
+  ],
+  resources: draft.pdfTitle
+    ? [{ title: draft.pdfTitle, type: 'pdf', size: '1.2 MB', downloadUrl: draft.pdfUrl }]
+    : [],
+});
+
+export const PlatformProvider = ({ children }: { children: React.ReactNode }) => {
+  const { route, navigate } = useRoute();
+
+  const [modules, setModules] = useState<ModuleItem[]>(() => {
+    const stored = readStorage<ModuleItem[] | null>(STORAGE.modules, null);
+    return stored && Array.isArray(stored) && stored.length > 0
+      ? hydrateModules(stored)
+      : sampleModules;
+  });
+
+  const [purchasedModuleIds, setPurchasedModuleIds] = useState<string[]>(() =>
+    readStorage<string[]>(STORAGE.purchases, ['guia-sueno-neurodivergente']),
+  );
+
+  const [sales, setSales] = useState<Sale[]>(() => readStorage<Sale[]>(STORAGE.sales, seedSales));
+
+  const [watchProgress, setWatchProgress] = useState<Record<string, WatchEntry>>(() =>
+    readStorage<Record<string, WatchEntry>>(STORAGE.progress, {
+      'guia-sueno-ep1': { seconds: 720, percent: 45, completed: false },
+    }),
+  );
 
   const [user, setUser] = useState<UserProfile | null>({
     id: 'usr-1',
     name: 'Carolina Gómez',
     email: 'carolina.gomez@gmail.com',
     role: 'Padre / Madre',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop',
-    childProfile: 'Mateo (7 años) • Diagnóstico TDAH & Desafío Sensorial'
+    avatarUrl:
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop',
+    childProfile: 'Mateo, 7 años. TDAH con desafío sensorial asociado.',
   });
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-
-  const [purchasedModuleIds, setPurchasedModuleIds] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem('neurovod_purchases');
-      return saved ? JSON.parse(saved) : ['guia-sueno-neurodivergente'];
-    } catch {
-      return ['guia-sueno-neurodivergente'];
-    }
-  });
-
-  const [watchProgress, setWatchProgress] = useState<Record<string, { seconds: number; percent: number; completed: boolean }>>(() => {
-    try {
-      const saved = localStorage.getItem('neurovod_progress');
-      return saved ? JSON.parse(saved) : {
-        'guia-sueno-ep1': { seconds: 720, percent: 45, completed: false }
-      };
-    } catch {
-      return {};
-    }
-  });
-
   const [activeDetailModule, setActiveDetailModule] = useState<ModuleItem | null>(null);
-  const [activeVideoEpisode, setActiveVideoEpisode] = useState<{ module: ModuleItem; episode: Episode } | null>(null);
+  const [activeVideoEpisode, setActiveVideoEpisode] = useState<{
+    module: ModuleItem;
+    episode: Episode;
+  } | null>(null);
   const [activeCheckoutModule, setActiveCheckoutModule] = useState<ModuleItem | null>(null);
   const [filters, setFilters] = useState<FilterState>(defaultFilters);
-  const [activeCategory, setActiveCategory] = useState<string>('all');
 
-  // Persist custom modules to localStorage
+  useEffect(() => writeStorage(STORAGE.modules, modules), [modules]);
+  useEffect(() => writeStorage(STORAGE.purchases, purchasedModuleIds), [purchasedModuleIds]);
+  useEffect(() => writeStorage(STORAGE.progress, watchProgress), [watchProgress]);
+  useEffect(() => writeStorage(STORAGE.sales, sales), [sales]);
+
+  // Mantiene sincronizadas las ventanas abiertas cuando cambia el catalogo.
   useEffect(() => {
-    try {
-      localStorage.setItem('neurovod_custom_modules', JSON.stringify(modules));
-    } catch (e) {
-      console.error('Failed to persist modules', e);
-    }
+    setActiveDetailModule((current) =>
+      current ? modules.find((m) => m.id === current.id) ?? null : null,
+    );
+    setActiveCheckoutModule((current) =>
+      current ? modules.find((m) => m.id === current.id) ?? null : null,
+    );
   }, [modules]);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('neurovod_purchases', JSON.stringify(purchasedModuleIds));
-    } catch (e) {
-      console.error('Failed to persist purchases', e);
-    }
-  }, [purchasedModuleIds]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('neurovod_progress', JSON.stringify(watchProgress));
-    } catch (e) {
-      console.error('Failed to persist progress', e);
-    }
-  }, [watchProgress]);
-
-  // Keep active modals updated if module data changes
-  useEffect(() => {
-    if (activeDetailModule) {
-      const updated = modules.find(m => m.id === activeDetailModule.id);
-      if (updated) setActiveDetailModule(updated);
-    }
-    if (activeCheckoutModule) {
-      const updated = modules.find(m => m.id === activeCheckoutModule.id);
-      if (updated) setActiveCheckoutModule(updated);
-    }
-  }, [modules]);
-
-  const login = (role: 'Padre / Madre' | 'Docente' | 'Terapeuta' | 'Médico / Administrador' = 'Padre / Madre') => {
-    setUser({
-      id: 'usr-1',
-      name: role === 'Médico / Administrador'
-        ? 'Dr. Julián Rossi'
-        : role === 'Docente'
-        ? 'Prof. Valeria Méndez'
-        : role === 'Terapeuta'
-        ? 'Lic. Facundo Ríos'
-        : 'Carolina Gómez',
-      email: role === 'Médico / Administrador'
-        ? 'dr.rossi@neurovod.med.ar'
-        : role === 'Docente'
-        ? 'valeria.escuela@colegio.edu.ar'
-        : role === 'Terapeuta'
-        ? 'facundo.to@centroterapeutico.com'
-        : 'carolina.gomez@gmail.com',
-      role,
-      avatarUrl: role === 'Médico / Administrador'
-        ? 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=600&auto=format&fit=crop'
-        : role === 'Terapeuta'
-        ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop'
-        : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop',
-      childProfile: role === 'Padre / Madre' ? 'Mateo (7 años) • TDAH & Desafío Sensorial' : undefined
-    });
+  const login = useCallback((role: UserRole = 'Padre / Madre') => {
+    const profiles: Record<UserRole, UserProfile> = {
+      'Padre / Madre': {
+        id: 'usr-1',
+        name: 'Carolina Gómez',
+        email: 'carolina.gomez@gmail.com',
+        role: 'Padre / Madre',
+        avatarUrl:
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop',
+        childProfile: 'Mateo, 7 años. TDAH con desafío sensorial asociado.',
+      },
+      Docente: {
+        id: 'usr-2',
+        name: 'Prof. Valeria Méndez',
+        email: 'valeria.escuela@colegio.edu.ar',
+        role: 'Docente',
+        avatarUrl:
+          'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=400&auto=format&fit=crop',
+      },
+      Terapeuta: {
+        id: 'usr-3',
+        name: 'Lic. Facundo Ríos',
+        email: 'facundo.to@centroterapeutico.com',
+        role: 'Terapeuta',
+        avatarUrl:
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop',
+      },
+      'Médico / Administrador': {
+        id: 'usr-4',
+        name: leadDoctor.name,
+        email: 'dr.rossi@neurovod.med.ar',
+        role: 'Médico / Administrador',
+        avatarUrl: leadDoctor.avatarUrl,
+      },
+    };
+    setUser(profiles[role]);
     setIsAuthModalOpen(false);
-  };
+  }, []);
 
-  const logout = () => {
-    setUser(null);
-  };
+  const logout = useCallback(() => setUser(null), []);
 
-  // Admin Actions
-  const updateModulePrice = (moduleId: string, newPriceArs: number) => {
-    setModules(prev => prev.map(m => {
-      if (m.id === moduleId) {
-        return { ...m, priceArs: newPriceArs };
-      }
-      return m;
-    }));
-  };
+  const isPurchased = useCallback(
+    (moduleId: string) => purchasedModuleIds.includes(moduleId),
+    [purchasedModuleIds],
+  );
 
-  const updateDoctorConsultFee = (newFeeArs: number) => {
-    setModules(prev => prev.map(m => ({
-      ...m,
-      doctor: { ...m.doctor, inPersonConsultFeeArs: newFeeArs }
-    })));
-  };
-
-  const reorderEpisode = (moduleId: string, episodeIndex: number, direction: 'up' | 'down') => {
-    setModules(prev => prev.map(mod => {
-      if (mod.id !== moduleId) return mod;
-      const targetIndex = direction === 'up' ? episodeIndex - 1 : episodeIndex + 1;
-      if (targetIndex < 0 || targetIndex >= mod.episodes.length) return mod;
-
-      const newEpisodes = [...mod.episodes];
-      const temp = newEpisodes[episodeIndex];
-      newEpisodes[episodeIndex] = newEpisodes[targetIndex];
-      newEpisodes[targetIndex] = temp;
-
-      // Update episode numbers sequentially
-      const updatedEpisodes = newEpisodes.map((ep, idx) => ({
-        ...ep,
-        episodeNumber: idx + 1
-      }));
-
-      return { ...mod, episodes: updatedEpisodes };
-    }));
-  };
-
-  const addEpisode = (moduleId: string, newEpData: { title: string; durationMinutes: number; synopsis: string; videoUrl: string }) => {
-    setModules(prev => prev.map(mod => {
-      if (mod.id !== moduleId) return mod;
-      const nextNum = mod.episodes.length + 1;
-      const newEpisode: Episode = {
-        id: `${moduleId}-ep-${Date.now()}`,
-        episodeNumber: nextNum,
-        title: `Episodio ${nextNum}: ${newEpData.title}`,
-        durationMinutes: newEpData.durationMinutes || 25,
-        synopsis: newEpData.synopsis || 'Contenido clínico nuevo subido por el profesional.',
-        videoUrl: newEpData.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-        thumbnailUrl: mod.thumbnailUrl,
-        chapters: [
-          { id: `c-${Date.now()}-1`, timeSeconds: 0, title: '00:00 Inicio de clase' },
-          { id: `c-${Date.now()}-2`, timeSeconds: 300, title: '05:00 Puntos clínicos centrales' }
-        ],
-        resources: []
-      };
-
-      const updatedEpisodes = [...mod.episodes, newEpisode];
-      return {
-        ...mod,
-        episodes: updatedEpisodes,
-        episodesCount: updatedEpisodes.length
-      };
-    }));
-  };
-
-  const deleteEpisode = (moduleId: string, episodeId: string) => {
-    setModules(prev => prev.map(mod => {
-      if (mod.id !== moduleId) return mod;
-      const filtered = mod.episodes.filter(ep => ep.id !== episodeId);
-      const renumbered = filtered.map((ep, idx) => ({
-        ...ep,
-        episodeNumber: idx + 1
-      }));
-      return {
-        ...mod,
-        episodes: renumbered,
-        episodesCount: renumbered.length
-      };
-    }));
-  };
-
-  const addPdfResource = (moduleId: string, episodeId: string, resource: { title: string; type: 'pdf' | 'checklist' | 'guide'; size: string }) => {
-    setModules(prev => prev.map(mod => {
-      if (mod.id !== moduleId) return mod;
-      const updatedEpisodes = mod.episodes.map(ep => {
-        if (ep.id === episodeId) {
-          const currentRes = ep.resources || [];
-          return {
-            ...ep,
-            resources: [...currentRes, resource]
-          };
-        }
-        return ep;
-      });
-      return { ...mod, episodes: updatedEpisodes };
-    }));
-  };
-
-  const deletePdfResource = (moduleId: string, episodeId: string, resourceTitle: string) => {
-    setModules(prev => prev.map(mod => {
-      if (mod.id !== moduleId) return mod;
-      const updatedEpisodes = mod.episodes.map(ep => {
-        if (ep.id === episodeId && ep.resources) {
-          return {
-            ...ep,
-            resources: ep.resources.filter(r => r.title !== resourceTitle)
-          };
-        }
-        return ep;
-      });
-      return { ...mod, episodes: updatedEpisodes };
-    }));
-  };
-
-  const purchaseModule = (moduleId: string) => {
-    if (!purchasedModuleIds.includes(moduleId)) {
-      setPurchasedModuleIds(prev => [...prev, moduleId]);
-    }
-    // Launch celebratory confetti
+  const purchaseModule = useCallback((moduleId: string) => {
+    setPurchasedModuleIds((prev) => (prev.includes(moduleId) ? prev : [...prev, moduleId]));
     try {
       confetti({
-        particleCount: 100,
-        spread: 80,
-        origin: { y: 0.55 },
-        colors: ['#06B6D4', '#10B981', '#38BDF8', '#F59E0B']
+        particleCount: 48,
+        spread: 52,
+        startVelocity: 26,
+        ticks: 110,
+        origin: { y: 0.5 },
+        colors: ['#0284C7', '#059669', '#CBD5E1', '#0F172A'],
       });
     } catch {
-      // ignore
+      // El confeti es decorativo. Si falla, la compra igual queda registrada.
     }
-  };
+  }, []);
 
-  const isPurchased = (moduleId: string) => {
-    return purchasedModuleIds.includes(moduleId);
-  };
+  const registerSale = useCallback((sale: Omit<Sale, 'id'>) => {
+    const prefix = sale.kind === 'beca' ? 'BECA' : 'MP';
+    const id = `${prefix}-${Date.now().toString().slice(-9)}`;
+    setSales((prev) => [{ ...sale, id }, ...prev]);
+  }, []);
 
-  const updateWatchProgress = (episodeId: string, seconds: number, totalSeconds: number) => {
-    const percent = Math.min(100, Math.round((seconds / totalSeconds) * 100));
-    setWatchProgress(prev => ({
-      ...prev,
-      [episodeId]: {
-        seconds,
-        percent,
-        completed: percent >= 90
-      }
-    }));
-  };
+  const grantManualAccess = useCallback(
+    (moduleId: string, email: string) => {
+      const target = modules.find((m) => m.id === moduleId);
+      if (!target) return;
+      setPurchasedModuleIds((prev) => (prev.includes(moduleId) ? prev : [...prev, moduleId]));
+      registerSale({
+        moduleId,
+        moduleTitle: target.title,
+        buyerEmail: email,
+        amountArs: 0,
+        method: 'Acceso otorgado por el profesional',
+        processedAt: new Date().toISOString(),
+        kind: 'beca',
+      });
+    },
+    [modules, registerSale],
+  );
 
-  const resetFilters = () => {
-    setFilters(defaultFilters);
-    setActiveCategory('all');
-  };
+  const revokeAccess = useCallback((moduleId: string) => {
+    setPurchasedModuleIds((prev) => prev.filter((id) => id !== moduleId));
+  }, []);
 
-  const resetDemoPurchases = () => {
+  const createModule = useCallback((draft: ModuleDraft) => {
+    const id = `mod-${Date.now()}`;
+    const episode = buildEpisodeFromDraft(id, draft);
+    const fresh: ModuleItem = {
+      id,
+      title: draft.title,
+      subtitle: draft.subtitle,
+      description: draft.description,
+      condition: draft.condition,
+      contentType: draft.contentType,
+      year: new Date().getFullYear(),
+      targetAudience: draft.targetAudience,
+      rating: 5,
+      reviewsCount: 0,
+      totalDurationHours: `${episode.durationMinutes} min`,
+      episodesCount: 1,
+      priceArs: draft.priceArs,
+      thumbnailUrl: draft.thumbnailUrl,
+      heroBannerUrl: draft.thumbnailUrl,
+      doctor: leadDoctor,
+      keyLearningPoints: [],
+      episodes: [episode],
+      tags: [draft.condition.toLowerCase()],
+    };
+    setModules((prev) => [fresh, ...prev]);
+  }, []);
+
+  const updateModule = useCallback((moduleId: string, draft: ModuleDraft) => {
+    setModules((prev) =>
+      prev.map((mod) => {
+        if (mod.id !== moduleId) return mod;
+        const episodes = mod.episodes.map((ep, index) =>
+          index === 0 ? { ...ep, videoUrl: draft.videoUrl || ep.videoUrl } : ep,
+        );
+        return {
+          ...mod,
+          title: draft.title,
+          subtitle: draft.subtitle,
+          description: draft.description,
+          condition: draft.condition,
+          contentType: draft.contentType,
+          targetAudience: draft.targetAudience,
+          priceArs: draft.priceArs,
+          thumbnailUrl: draft.thumbnailUrl || mod.thumbnailUrl,
+          episodes,
+        };
+      }),
+    );
+  }, []);
+
+  const deleteModule = useCallback((moduleId: string) => {
+    setModules((prev) => prev.filter((mod) => mod.id !== moduleId));
+    setPurchasedModuleIds((prev) => prev.filter((id) => id !== moduleId));
+  }, []);
+
+  const updateModulePrice = useCallback((moduleId: string, newPriceArs: number) => {
+    setModules((prev) =>
+      prev.map((mod) => (mod.id === moduleId ? { ...mod, priceArs: newPriceArs } : mod)),
+    );
+  }, []);
+
+  const updateDoctorConsultFee = useCallback((newFeeArs: number) => {
+    setModules((prev) =>
+      prev.map((mod) => ({
+        ...mod,
+        doctor: { ...mod.doctor, inPersonConsultFeeArs: newFeeArs },
+      })),
+    );
+  }, []);
+
+  const reorderEpisode = useCallback(
+    (moduleId: string, episodeIndex: number, direction: 'up' | 'down') => {
+      setModules((prev) =>
+        prev.map((mod) => {
+          if (mod.id !== moduleId) return mod;
+          const targetIndex = direction === 'up' ? episodeIndex - 1 : episodeIndex + 1;
+          if (targetIndex < 0 || targetIndex >= mod.episodes.length) return mod;
+
+          const reordered = [...mod.episodes];
+          [reordered[episodeIndex], reordered[targetIndex]] = [
+            reordered[targetIndex],
+            reordered[episodeIndex],
+          ];
+          return {
+            ...mod,
+            episodes: reordered.map((ep, index) => ({ ...ep, episodeNumber: index + 1 })),
+          };
+        }),
+      );
+    },
+    [],
+  );
+
+  const addEpisode = useCallback(
+    (
+      moduleId: string,
+      data: { title: string; durationMinutes: number; synopsis: string; videoUrl: string },
+    ) => {
+      setModules((prev) =>
+        prev.map((mod) => {
+          if (mod.id !== moduleId) return mod;
+          const nextNumber = mod.episodes.length + 1;
+          const stamp = Date.now();
+          const episode: Episode = {
+            id: `${moduleId}-ep-${stamp}`,
+            episodeNumber: nextNumber,
+            title: `Episodio ${nextNumber}: ${data.title}`,
+            durationMinutes: data.durationMinutes || 25,
+            synopsis: data.synopsis || 'Clase clínica cargada desde el panel del profesional.',
+            videoUrl:
+              data.videoUrl ||
+              'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+            thumbnailUrl: mod.thumbnailUrl,
+            chapters: [
+              { id: `c-${stamp}-1`, timeSeconds: 0, title: '00:00 Apertura de la clase' },
+              { id: `c-${stamp}-2`, timeSeconds: 300, title: '05:00 Puntos clínicos centrales' },
+            ],
+            resources: [],
+          };
+          const episodes = [...mod.episodes, episode];
+          return { ...mod, episodes, episodesCount: episodes.length };
+        }),
+      );
+    },
+    [],
+  );
+
+  const updateEpisodeVideoUrl = useCallback(
+    (moduleId: string, episodeId: string, videoUrl: string) => {
+      setModules((prev) =>
+        prev.map((mod) =>
+          mod.id === moduleId
+            ? {
+                ...mod,
+                episodes: mod.episodes.map((ep) => (ep.id === episodeId ? { ...ep, videoUrl } : ep)),
+              }
+            : mod,
+        ),
+      );
+    },
+    [],
+  );
+
+  const deleteEpisode = useCallback((moduleId: string, episodeId: string) => {
+    setModules((prev) =>
+      prev.map((mod) => {
+        if (mod.id !== moduleId) return mod;
+        const episodes = mod.episodes
+          .filter((ep) => ep.id !== episodeId)
+          .map((ep, index) => ({ ...ep, episodeNumber: index + 1 }));
+        return { ...mod, episodes, episodesCount: episodes.length };
+      }),
+    );
+  }, []);
+
+  const addPdfResource = useCallback(
+    (moduleId: string, episodeId: string, resource: EpisodeResource) => {
+      setModules((prev) =>
+        prev.map((mod) =>
+          mod.id === moduleId
+            ? {
+                ...mod,
+                episodes: mod.episodes.map((ep) =>
+                  ep.id === episodeId ? { ...ep, resources: [...(ep.resources ?? []), resource] } : ep,
+                ),
+              }
+            : mod,
+        ),
+      );
+    },
+    [],
+  );
+
+  const deletePdfResource = useCallback(
+    (moduleId: string, episodeId: string, resourceTitle: string) => {
+      setModules((prev) =>
+        prev.map((mod) =>
+          mod.id === moduleId
+            ? {
+                ...mod,
+                episodes: mod.episodes.map((ep) =>
+                  ep.id === episodeId
+                    ? { ...ep, resources: (ep.resources ?? []).filter((r) => r.title !== resourceTitle) }
+                    : ep,
+                ),
+              }
+            : mod,
+        ),
+      );
+    },
+    [],
+  );
+
+  const updateWatchProgress = useCallback(
+    (episodeId: string, seconds: number, totalSeconds: number) => {
+      if (!totalSeconds || totalSeconds <= 0) return;
+      const percent = Math.min(100, Math.round((seconds / totalSeconds) * 100));
+      setWatchProgress((prev) => {
+        const current = prev[episodeId];
+        if (current && current.percent === percent) return prev;
+        return { ...prev, [episodeId]: { seconds, percent, completed: percent >= 90 } };
+      });
+    },
+    [],
+  );
+
+  const resetFilters = useCallback(() => setFilters(defaultFilters), []);
+
+  const resetDemoPurchases = useCallback(() => {
     setPurchasedModuleIds(['guia-sueno-neurodivergente']);
-    localStorage.removeItem('neurovod_purchases');
-  };
+  }, []);
 
-  const unlockAllDemo = () => {
-    const allIds = modules.map(m => m.id);
-    setPurchasedModuleIds(allIds);
-    try {
-      confetti({ particleCount: 70, spread: 60 });
-    } catch {}
-  };
+  const unlockAllDemo = useCallback(() => {
+    setPurchasedModuleIds(modules.map((m) => m.id));
+  }, [modules]);
 
   return (
     <PlatformContext.Provider
       value={{
         modules,
         purchasedModuleIds,
-        purchaseModule,
         isPurchased,
+        purchaseModule,
+        sales,
+        registerSale,
+        grantManualAccess,
+        revokeAccess,
         user,
         login,
         logout,
         isAuthModalOpen,
         setIsAuthModalOpen,
-        isAdminOpen,
-        setIsAdminOpen,
+        route,
+        navigate,
+        createModule,
+        updateModule,
+        deleteModule,
         updateModulePrice,
         updateDoctorConsultFee,
         reorderEpisode,
         addEpisode,
+        updateEpisodeVideoUrl,
         deleteEpisode,
         addPdfResource,
         deletePdfResource,
@@ -406,10 +592,8 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         filters,
         setFilters,
         resetFilters,
-        activeCategory,
-        setActiveCategory,
         resetDemoPurchases,
-        unlockAllDemo
+        unlockAllDemo,
       }}
     >
       {children}
@@ -417,10 +601,10 @@ export const PlatformProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   );
 };
 
-export const usePlatform = () => {
+export const usePlatform = (): PlatformContextType => {
   const context = useContext(PlatformContext);
   if (!context) {
-    throw new Error('usePlatform must be used within a PlatformProvider');
+    throw new Error('usePlatform debe usarse dentro de un PlatformProvider.');
   }
   return context;
 };

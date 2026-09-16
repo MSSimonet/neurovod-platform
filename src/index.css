@@ -2,113 +2,286 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   NEUROVOD MEDICA - TOKENS EDITORIALES (Design.md, seccion 4)
+   Modo claro sobrio por defecto. Sin neon, sin cristal, sin
+   sombras flotantes multidireccionales.
+   ============================================================ */
+
 @layer base {
   :root {
-    --color-surface-base: #070A12;
-    --color-surface-card: #0F172A;
-    --color-accent-cyan: #06B6D4;
-    --color-accent-emerald: #10B981;
+    /* Superficies: papel medico y estructura editorial */
+    --bg-app: #FAFAFA;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F1F5F9;
+    --bg-alt: #E2E8F0;
+
+    /* Tipografia y contraste de lectura */
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
+    --text-inverse: #FFFFFF;
+
+    /* Acento clinico (regla del 10% maximo de uso) */
+    --accent-primary: #0284C7;
+    --accent-hover: #0369A1;
+    --accent-surface: #F0F9FF;
+    --accent-border: #BAE6FD;
+
+    /* Confirmacion y alerta medica */
+    --success-primary: #059669;
+    --success-surface: #ECFDF5;
+
+    /* Reticula y bordes de estructura */
+    --border-clean: #E2E8F0;
+    --border-strong: #CBD5E1;
+
+    /* Geometria editorial */
+    --radius-xs: 2px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --shadow-subtle: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+
+    /* Etiquetas sanitarias por condicion */
+    --tag-tdah-bg: #FEF3C7;
+    --tag-tdah-text: #92400E;
+    --tag-tea-bg: #E0F2FE;
+    --tag-tea-text: #075985;
+    --tag-sensorial-bg: #EDE9FE;
+    --tag-sensorial-text: #5B21B6;
+    --tag-general-bg: #F1F5F9;
+    --tag-general-text: #334155;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background-color: #070A12;
-    color: #F1F5F9;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
-}
 
-/* Custom slick scrollbars */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: rgba(7, 10, 18, 0.8);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.7);
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(6, 182, 212, 0.6);
-}
-
-/* High-End Agency Micro-Aesthetics */
-.glass-island {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
-}
-
-.glass-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.glass-card-hover {
-  transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-}
-.glass-card-hover:hover {
-  border-color: rgba(6, 182, 212, 0.4);
-  box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.15), 0 0 1px 1px rgba(6, 182, 212, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Double Bezel Card Concept */
-.double-bezel {
-  padding: 5px;
-  border-radius: 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
-}
-
-.double-bezel-inner {
-  border-radius: calc(1.25rem - 5px);
-  overflow: hidden;
-  background: #0D1424;
-}
-
-/* Blur backdrop glow utilities */
-.medical-glow {
-  box-shadow: 0 0 60px -10px rgba(6, 182, 212, 0.18);
-}
-
-.medical-glow-sm {
-  box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.25);
-}
-
-.emerald-glow-sm {
-  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
-}
-
-/* Subtle pulse for live status */
-@keyframes soft-pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
+  h1, h2, h3 {
+    font-family: "Instrument Serif", Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
   }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.08);
+
+  ::selection {
+    background: var(--accent-border);
+    color: var(--text-primary);
+  }
+
+  /* Accesibilidad WCAG 2.2 AA: foco siempre visible */
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-subtle);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border: 3px solid var(--bg-subtle);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
   }
 }
 
-.animate-soft-pulse {
-  animation: soft-pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@layer components {
+  /* ---------- Contenedor maestro ---------- */
+  .shell {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) {
+    .shell { padding-inline: 32px; }
+  }
+  @media (min-width: 1280px) {
+    .shell { padding-inline: 48px; }
+  }
+
+  /* ---------- Reticula visible de compendio impreso ----------
+     El contenedor dibuja el borde superior e izquierdo, cada
+     celda dibuja el suyo derecho e inferior. Resultado: una
+     cuadricula continua de 1px sin lineas dobles.               */
+  .rule-grid {
+    display: grid;
+    border-top: 1px solid var(--border-clean);
+    border-left: 1px solid var(--border-clean);
+    background-color: var(--bg-card);
+  }
+  .rule-cell {
+    border-right: 1px solid var(--border-clean);
+    border-bottom: 1px solid var(--border-clean);
+  }
+
+  /* ---------- Etiqueta de condicion medica ---------- */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 7px;
+    border-radius: var(--radius-xs);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .tag-tdah      { background: var(--tag-tdah-bg);      color: var(--tag-tdah-text); }
+  .tag-tea       { background: var(--tag-tea-bg);       color: var(--tag-tea-text); }
+  .tag-sensorial { background: var(--tag-sensorial-bg); color: var(--tag-sensorial-text); }
+  .tag-general   { background: var(--tag-general-bg);   color: var(--tag-general-text); }
+
+  /* ---------- Botones planos, sin degradado ni halo ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: var(--radius-xs);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 11px 18px;
+    transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--accent-primary);
+    color: var(--text-inverse);
+    border: 1px solid var(--accent-primary);
+  }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+  .btn-secondary {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+  }
+  .btn-secondary:hover { background: var(--bg-subtle); border-color: var(--text-muted); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+  }
+  .btn-ghost:hover { background: var(--bg-subtle); color: var(--text-primary); }
+
+  .btn-ok {
+    background: var(--success-primary);
+    color: var(--text-inverse);
+    border: 1px solid var(--success-primary);
+  }
+  .btn-ok:hover { background: #047857; border-color: #047857; }
+
+  .btn:disabled { opacity: 0.45; pointer-events: none; }
+
+  /* ---------- Campos de formulario ---------- */
+  .field {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-xs);
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--text-primary);
+    transition: border-color 140ms ease-out;
+  }
+  .field::placeholder { color: var(--text-muted); }
+  .field:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+  }
+
+  .label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  /* ---------- Rotulo de seccion tipo compendio ---------- */
+  .kicker {
+    font-family: "Geist Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ---------- Bloque de evidencia y cita clinica ---------- */
+  .evidence {
+    background: var(--bg-subtle);
+    border-left: 2px solid var(--accent-primary);
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  /* ---------- Velo de modal: opaco, sin desenfoque ---------- */
+  .veil {
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  /* ---------- Barra de progreso lineal ---------- */
+  .progress-track {
+    height: 3px;
+    background: var(--bg-alt);
+    width: 100%;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent-primary);
+    transition: width 220ms ease-out;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Cifra clinica en monoespaciada tabular */
+  .tabular {
+    font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Elevacion sobria de 2px al pasar el cursor sobre una ficha */
+  .lift {
+    transition: transform 160ms ease-out, border-color 160ms ease-out, background-color 160ms ease-out;
+  }
+  .lift:hover { transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .lift:hover { transform: none; }
 }

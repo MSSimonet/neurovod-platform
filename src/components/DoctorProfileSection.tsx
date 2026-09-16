@@ -1,106 +1,137 @@
 import React from 'react';
 import { leadDoctor } from '../data/catalog';
-import { ShieldCheck, Award, Stethoscope, Users, HeartHandshake, BookCheck } from 'lucide-react';
+import { ShieldCheck, FileText, RotateCcw, Stethoscope } from 'lucide-react';
 
-export const DoctorProfileSection: React.FC = () => {
+const GUARANTEES = [
+  {
+    icon: ShieldCheck,
+    title: 'Contenido firmado',
+    detail: 'Cada clase lleva nombre, especialidad y matrícula del profesional que la dicta.',
+  },
+  {
+    icon: FileText,
+    title: 'Bibliografía adjunta',
+    detail: 'Las afirmaciones clínicas citan su fuente. La bibliografía se descarga en PDF.',
+  },
+  {
+    icon: RotateCcw,
+    title: 'Devolución en 7 días',
+    detail: 'Si el módulo no resuelve tu consulta, se reintegra el monto sin pedir explicaciones.',
+  },
+  {
+    icon: Stethoscope,
+    title: 'Revisión anual',
+    detail: 'Los protocolos se actualizan cuando cambian los criterios diagnósticos vigentes.',
+  },
+];
+
+const BIBLIOGRAPHY = [
+  {
+    source: 'American Psychiatric Association',
+    detail: 'DSM-5-TR, criterios diagnósticos de TDAH y Trastorno del Espectro Autista',
+    year: 2022,
+  },
+  {
+    source: 'Sociedad Argentina de Pediatría',
+    detail: 'Consenso sobre abordaje interdisciplinario del neurodesarrollo',
+    year: 2024,
+  },
+  {
+    source: 'NICE Guideline NG87',
+    detail: 'Attention deficit hyperactivity disorder: diagnosis and management',
+    year: 2019,
+  },
+  {
+    source: 'Journal of Clinical Sleep Medicine',
+    detail: 'Sleep interventions in children with neurodevelopmental disorders',
+    year: 2023,
+  },
+];
+
+/**
+ * Bloque de autoridad médica exigido por Voice.md (marco E-E-A-T):
+ * profesional identificable, garantías explícitas y bibliografía consultable.
+ */
+export const DoctorProfileSection = () => {
   return (
-    <section className="my-16 sm:my-20 px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto">
-      <div className="relative rounded-3xl bg-gradient-to-br from-slate-900 via-[#101726] to-slate-900 border border-slate-800 p-6 sm:p-10 lg:p-12 overflow-hidden shadow-2xl">
-        {/* Subtle background glow & attentive consultation photo texture */}
-        <div className="absolute inset-0 z-0 opacity-15 pointer-events-none">
-          <img
-            src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=1200&auto=format&fit=crop"
-            alt="Consulta médica pediátrica"
-            className="w-full h-full object-cover filter grayscale contrast-125"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900" />
-        </div>
-        <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -left-20 -top-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+    <section className="py-12 lg:py-16 border-b border-rule bg-card">
+      <div className="shell">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+          {/* Declaración del profesional */}
+          <div className="lg:col-span-7">
+            <p className="kicker">Quién responde por este contenido</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
-          {/* Doctor Avatar & Badges */}
-          <div className="lg:col-span-4 flex flex-col items-center text-center">
-            <div className="relative">
+            <blockquote className="mt-5">
+              <h2 className="text-3xl sm:text-[2.5rem] leading-[1.1]">
+                &ldquo;El turno dura treinta minutos. Las dudas de una familia, no.&rdquo;
+              </h2>
+            </blockquote>
+
+            <p className="mt-5 max-w-prose text-[15px] leading-relaxed text-ink-secondary">
+              En cada consulta repito las mismas explicaciones de base. Las grabé para que puedas
+              verlas las veces que hagan falta, con tu pareja, con los abuelos o con la terapeuta.
+              El turno presencial queda libre para lo que sí es único de tu hijo.
+            </p>
+
+            <div className="mt-7 flex items-center gap-4 border-t border-ink pt-5">
               <img
                 src={leadDoctor.avatarUrl}
-                alt={leadDoctor.name}
-                className="w-44 h-44 sm:w-52 sm:h-52 rounded-3xl object-cover border-4 border-cyan-500/40 shadow-2xl"
+                alt={`Retrato del ${leadDoctor.name}`}
+                className="w-14 h-14 rounded-xs object-cover border border-rule"
+                loading="lazy"
               />
-              <div className="absolute -bottom-3 -right-3 p-2.5 rounded-2xl bg-cyan-500 text-slate-950 shadow-lg font-bold flex items-center gap-1">
-                <ShieldCheck className="w-5 h-5" />
+              <div>
+                <p className="font-semibold text-ink">{leadDoctor.name}</p>
+                <p className="tabular text-2xs uppercase tracking-wider text-ink-muted mt-0.5">
+                  {leadDoctor.specialty} · Matrícula {leadDoctor.licenseNumber} ·{' '}
+                  {leadDoctor.experienceYears} años de práctica
+                </p>
               </div>
             </div>
 
-            <h3 className="text-xl sm:text-2xl font-black text-white mt-5">
-              {leadDoctor.name}
-            </h3>
-            <p className="text-xs font-bold text-cyan-400 mt-1 uppercase tracking-wider">
-              {leadDoctor.title}
-            </p>
-            <p className="text-xs text-slate-400 mt-0.5">
-              {leadDoctor.licenseNumber}
-            </p>
-
-            {/* Quick stats badges */}
-            <div className="grid grid-cols-2 gap-2 mt-4 w-full max-w-xs">
-              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-center">
-                <div className="text-lg font-black text-white">+3.500</div>
-                <div className="text-[10px] text-slate-400">Familias Guiadas</div>
-              </div>
-              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-center">
-                <div className="text-lg font-black text-white">{leadDoctor.experienceYears} Años</div>
-                <div className="text-[10px] text-slate-400">Práctica Clínica</div>
-              </div>
+            {/* Bibliografía consultable */}
+            <div className="mt-10">
+              <p className="kicker">Bibliografía de referencia</p>
+              <ul className="mt-4 border-t border-rule">
+                {BIBLIOGRAPHY.map((ref) => (
+                  <li
+                    key={ref.source}
+                    className="flex items-baseline justify-between gap-4 border-b border-rule py-3"
+                  >
+                    <span className="text-[13px] leading-relaxed text-ink-secondary">
+                      <span className="font-semibold text-ink">{ref.source}.</span> {ref.detail}.
+                    </span>
+                    <span className="tabular text-2xs text-ink-muted shrink-0">{ref.year}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
-          {/* Doctor Message & Rationale */}
-          <div className="lg:col-span-8 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
-              <HeartHandshake className="w-4 h-4 text-cyan-400" />
-              El Propósito de esta Plataforma
+          {/* Garantías clínicas */}
+          <div className="lg:col-span-5">
+            <p className="kicker">Garantías</p>
+            <div className="mt-4 rule-grid grid-cols-1">
+              {GUARANTEES.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.title} className="rule-cell flex gap-4 p-5">
+                    <Icon className="w-4 h-4 mt-0.5 shrink-0 text-accent" aria-hidden="true" />
+                    <div>
+                      <h3 className="text-base font-sans font-semibold text-ink">{item.title}</h3>
+                      <p className="mt-1 text-[13px] leading-relaxed text-ink-secondary">
+                        {item.detail}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
-              "El tiempo físico en el consultorio es limitado, pero las dudas de una familia con un hijo neurodivergente no pueden esperar meses."
-            </h2>
-
-            <p className="text-sm text-slate-300 leading-relaxed">
-              En cada consulta presencial repito las mismas explicaciones esenciales sobre neurobiología, desregulaciones, escuela y rutinas cotidianas. Con esta plataforma VOD quise volcar todo ese conocimiento en módulos ordenados y prácticos para que las familias tengan respuestas inmediatas a un valor mucho más accesible que una consulta privada.
+            <p className="evidence mt-6">
+              Este material es psicoeducativo. No reemplaza la consulta individual, el diagnóstico
+              clínico ni la indicación farmacológica del profesional que atiende a tu hijo.
             </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
-              <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 shadow-sm">
-                <BookCheck className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-black text-white">Pedagogía Médica Clara</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
-                    Módulos estructurados con lenguaje empático, directo y sin jerga incomprensible.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 shadow-sm">
-                <Users className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-black text-white">A tu Propio Ritmo</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
-                    Repasa las clases cuantas veces necesites junto a la pareja, abuelos o terapeutas.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 shadow-sm">
-                <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-black text-white">Kits & PDFs Incluidos</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
-                    Modelos de informes para docentes, agendas visuales y checklists para el hogar.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
