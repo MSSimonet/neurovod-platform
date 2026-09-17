@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#FAFAFA" />
+    <title>Página no encontrada | NeuroVOD Médica</title>
+
+    <!--
+      Página independiente, sin JavaScript ni hoja de estilos externa: la sirve
+      Vercel con estado 404 cuando ninguna ruta coincide, y tiene que pintarse
+      aunque el resto del sitio no llegue a cargar. Por eso los tipos son los
+      de reserva del sistema de diseño (Georgia y system-ui), no las fuentes
+      empaquetadas, cuyo nombre de archivo cambia en cada compilación.
+    -->
+    <style>
+      :root {
+        --bg-app: #FAFAFA;
+        --text-primary: #0F172A;
+        --text-secondary: #334155;
+        --text-muted-strong: #475569;
+        --text-inverse: #FFFFFF;
+        --accent-primary: #0369A1;
+        --accent-hover: #075985;
+        --border-clean: #E2E8F0;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: var(--bg-app);
+        color: var(--text-primary);
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      main {
+        width: 100%;
+        max-width: 560px;
+        border: 1px solid var(--border-clean);
+        background: #FFFFFF;
+        padding: 40px 32px;
+      }
+
+      .kicker {
+        margin: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-muted-strong);
+      }
+
+      h1 {
+        margin: 20px 0 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 2.5rem;
+        font-weight: 400;
+        line-height: 1.05;
+      }
+
+      p {
+        margin: 16px 0 0;
+        font-size: 15px;
+        line-height: 1.65;
+        color: var(--text-secondary);
+      }
+
+      a {
+        display: inline-block;
+        margin-top: 28px;
+        padding: 10px 18px;
+        border: 1px solid var(--accent-primary);
+        border-radius: 2px;
+        background: var(--accent-primary);
+        color: var(--text-inverse);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      a:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+      a:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
+
+      footer {
+        margin-top: 32px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border-clean);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted-strong);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="kicker">Error 404</p>
+      <h1>Esta página no existe.</h1>
+      <p>
+        Puede que el enlace esté mal copiado o que el material haya cambiado de
+        lugar. El compendio completo sigue donde estaba.
+      </p>
+      <a href="/">Volver al catálogo</a>
+      <footer>NeuroVOD Médica · Dr. Julián Rossi · MN 142.890</footer>
+    </main>
+  </body>
+</html>
