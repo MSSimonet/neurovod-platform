@@ -18,13 +18,13 @@ export default {
           inverse: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "#0284C7",
-          hover: "#0369A1",
+          DEFAULT: "#0369A1",
+          hover: "#075985",
           surface: "#F0F9FF",
           border: "#BAE6FD",
         },
         ok: {
-          DEFAULT: "#059669",
+          DEFAULT: "#047857",
           surface: "#ECFDF5",
         },
         rule: {

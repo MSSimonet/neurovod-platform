@@ -52,16 +52,17 @@ Basado en la paleta clínica sobria de marca personal (Modo Claro Editorial por 
   --text-primary: #0F172A;    /* Slate-900: Máxima nitidez y autoridad médica */
   --text-secondary: #334155;  /* Slate-700: Subtítulos y descripciones cortas */
   --text-muted: #64748B;      /* Slate-500: Metadatos, duraciones y matrículas */
+  --text-muted-strong: #475569; /* Slate-600: El mismo gris tenue cuando va a 11px o sobre gris */
   --text-inverse: #FFFFFF;    /* Texto sobre botones activos */
 
   /* Acento Clínico (Regla del 10% Máximo de Uso) */
-  --accent-primary: #0284C7;  /* Sky-600: Azul clínico sereno para CTAs principales */
-  --accent-hover: #0369A1;    /* Sky-700: Estado hover */
+  --accent-primary: #0369A1;  /* Sky-700: Azul clínico sereno para CTAs principales (AA: 5,9:1) */
+  --accent-hover: #075985;    /* Sky-800: Estado hover */
   --accent-surface: #F0F9FF;  /* Sky-50: Fichas seleccionadas y etiquetas activas */
   --accent-border: #BAE6FD;   /* Borde de selección */
 
   /* Confirmación y Alerta Médica */
-  --success-primary: #059669; /* Emerald-600: Estado Módulo Desbloqueado */
+  --success-primary: #047857; /* Emerald-700: Estado Módulo Desbloqueado (AA: 5,5:1) */
   --success-surface: #ECFDF5;
 
   /* Retícula y Bordes de Estructura */

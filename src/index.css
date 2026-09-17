@@ -20,16 +20,18 @@
     --text-primary: #0F172A;
     --text-secondary: #334155;
     --text-muted: #64748B;
+    /* Version legible del gris tenue sobre superficies grises (AA a 11px) */
+    --text-muted-strong: #475569;
     --text-inverse: #FFFFFF;
 
     /* Acento clinico (regla del 10% maximo de uso) */
-    --accent-primary: #0284C7;
-    --accent-hover: #0369A1;
+    --accent-primary: #0369A1;
+    --accent-hover: #075985;
     --accent-surface: #F0F9FF;
     --accent-border: #BAE6FD;
 
     /* Confirmacion y alerta medica */
-    --success-primary: #059669;
+    --success-primary: #047857;
     --success-surface: #ECFDF5;
 
     /* Reticula y bordes de estructura */
@@ -208,7 +210,7 @@
   .field:focus {
     border-color: var(--accent-primary);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+    box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.12);
   }
 
   .label {
@@ -228,7 +230,7 @@
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-muted-strong);
   }
 
   /* ---------- Bloque de evidencia y cita clinica ---------- */

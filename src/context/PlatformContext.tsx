@@ -324,7 +324,7 @@ export const PlatformProvider = ({ children }: { children: React.ReactNode }) =>
         startVelocity: 26,
         ticks: 110,
         origin: { y: 0.5 },
-        colors: ['#0284C7', '#059669', '#CBD5E1', '#0F172A'],
+        colors: ['#0369A1', '#047857', '#CBD5E1', '#0F172A'],
       });
     } catch {
       // El confeti es decorativo. Si falla, la compra igual queda registrada.
