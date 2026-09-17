@@ -1,0 +1,6 @@
+# NeuroVOD Médica
+# El catálogo es público; el panel de gestión no se indexa.
+
+User-agent: *
+Allow: /
+Disallow: /admin
