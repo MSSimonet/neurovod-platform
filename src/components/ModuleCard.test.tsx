@@ -70,12 +70,14 @@ describe('datos clínicos de la ficha', () => {
     expect(screen.getByText(/\d+ PDF/)).toBeInTheDocument();
   });
 
-  test('el título abre la ficha completa y es alcanzable por teclado', () => {
+  test('el título abre la ficha completa y se nombra con el texto que se ve', () => {
     renderConPlataforma(<ModuleCard module={moduloBloqueado} index={0} />);
 
-    const abrir = screen.getByRole('button', { name: /abrir la ficha de/i });
-    expect(abrir).toBeInTheDocument();
-    expect(abrir).toHaveAccessibleName(new RegExp(moduloBloqueado.title, 'i'));
+    // WCAG 2.5.3: el nombre accesible tiene que contener el texto visible. Si
+    // se lo reemplaza por un aria-label, quien navega por voz dice lo que lee
+    // y no activa nada.
+    const abrir = screen.getByRole('button', { name: new RegExp(moduloBloqueado.title, 'i') });
+    expect(abrir).toHaveAccessibleName(new RegExp(moduloBloqueado.subtitle, 'i'));
   });
 
   test('la imagen de portada es decorativa y no ensucia el lector de pantalla', () => {

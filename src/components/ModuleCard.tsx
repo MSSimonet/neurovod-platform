@@ -39,7 +39,6 @@ export const ModuleCard = ({ module, index }: ModuleCardProps) => {
       <button
         onClick={() => setActiveDetailModule(module)}
         className="group text-left px-5 pt-4"
-        aria-label={`Abrir la ficha de ${module.title}`}
       >
         <div className="relative overflow-hidden border border-rule rounded-xs">
           <img
