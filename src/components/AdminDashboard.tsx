@@ -88,7 +88,7 @@ export const AdminDashboard = () => {
           <div className="flex items-baseline gap-3 min-w-0">
             <span className="font-serif text-xl leading-none text-ink">Panel médico</span>
             <span className="tabular hidden sm:inline text-2xs uppercase tracking-wider text-ink-muted truncate">
-              {leadDoctor.name} · MN {leadDoctor.licenseNumber.replace(/\D/g, '')}
+              {leadDoctor.name} · {leadDoctor.licenseNumber}
             </span>
           </div>
 

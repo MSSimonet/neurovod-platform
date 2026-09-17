@@ -3,6 +3,7 @@ import { describe, expect, test, vi, beforeEach } from 'vitest';
 import { screen, within, waitFor } from '@testing-library/react';
 import { renderConPlataforma } from '../test/render';
 import { AdminDashboard } from './AdminDashboard';
+import { leadDoctor } from '../data/catalog';
 
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 
@@ -25,6 +26,14 @@ describe('encabezado e indicadores', () => {
 
     expect(screen.getByText(/panel médico/i)).toBeInTheDocument();
     expect(screen.getByText(/Julián Rossi/)).toBeInTheDocument();
+  });
+
+  test('muestra la matrícula tal como está registrada', () => {
+    renderConPlataforma(<AdminDashboard />);
+
+    // El encabezado la trituraba con un replace y mostraba las dos matrículas
+    // pegadas en un número que no existe. Acá se lee igual que en la portada.
+    expect(screen.getByText(`${leadDoctor.name} · ${leadDoctor.licenseNumber}`)).toBeInTheDocument();
   });
 
   test('resume facturación, operaciones y contenido publicado', () => {
