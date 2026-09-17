@@ -8,10 +8,59 @@
     <title>NeuroVOD Médica | Compendio clínico en video sobre TDAH, TEA y neurodesarrollo</title>
     <meta name="description" content="Programas clínicos en video del Dr. Julián Rossi, neurólogo infantil (MN 142.890). Protocolos verificados sobre TDAH, Autismo (TEA) y desafíos sensoriales para familias, docentes y terapeutas." />
     <meta name="author" content="Dr. Julián Rossi, MN 142.890" />
+    <link rel="canonical" href="https://neurovod-platform.vercel.app/" />
+
+    <!-- Tarjeta del enlace compartido. La imagen se genera con `npm run og`
+         desde scripts/og/plantilla.html, y la URL tiene que ser absoluta:
+         WhatsApp, Facebook y X no resuelven rutas relativas. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="NeuroVOD Médica" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:url" content="https://neurovod-platform.vercel.app/" />
+    <meta property="og:title" content="NeuroVOD Médica | Compendio clínico en video sobre TDAH, TEA y neurodesarrollo" />
+    <meta property="og:description" content="Programas clínicos en video del Dr. Julián Rossi, neurólogo infantil. Protocolos verificados sobre TDAH, Autismo (TEA) y desafíos sensoriales para familias, docentes y terapeutas." />
+    <meta property="og:image" content="https://neurovod-platform.vercel.app/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Retrato del Dr. Julián Rossi junto al título del compendio clínico en video." />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Las portadas del catálogo vienen de Unsplash: abrir la conexión antes
          de que el primer <img> la pida ahorra el ida y vuelta de DNS y TLS. -->
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    <!-- Datos estructurados. Tienen que vivir en el HTML servido, porque los
+         buscadores los leen sin ejecutar la aplicación. Los valores repiten a
+         leadDoctor en src/data/catalog.ts: si cambia la matrícula, cambia acá. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "MedicalWebPage",
+        "name": "NeuroVOD Médica",
+        "url": "https://neurovod-platform.vercel.app/",
+        "inLanguage": "es-AR",
+        "description": "Compendio clínico en video sobre TDAH, Autismo (TEA), desafíos sensoriales y neurodesarrollo, para familias, docentes y terapeutas.",
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "Familias, docentes y terapeutas"
+        },
+        "about": [
+          { "@type": "MedicalCondition", "name": "Trastorno por déficit de atención e hiperactividad" },
+          { "@type": "MedicalCondition", "name": "Trastorno del espectro autista" }
+        ],
+        "author": {
+          "@type": "Person",
+          "name": "Julián Rossi",
+          "honorificPrefix": "Dr.",
+          "jobTitle": "Médico Especialista en Neurología Infantil y Neurodesarrollo",
+          "identifier": "MN 142.890 / MP 45.210"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "NeuroVOD Médica"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
