@@ -4,6 +4,7 @@ import { Modal } from './ui/Modal';
 import { formatArs, formatArsLong, formatDate } from '../lib/format';
 import { confirmPayment, isSandbox, PaymentMethod, PaymentResult } from '../lib/mercadopago';
 import { Check, Copy, Download, Play, ShieldCheck, AlertCircle } from 'lucide-react';
+import { imageAt } from '../lib/imageUrl';
 
 const METHODS: { value: PaymentMethod; label: string; detail: string }[] = [
   { value: 'mercadopago', label: 'Mercado Pago', detail: 'Dinero en cuenta o QR' },
@@ -188,7 +189,7 @@ export const CheckoutModal = () => {
         {/* Resumen del programa */}
         <div className="mt-6 flex items-start gap-4 border-y border-rule py-4">
           <img
-            src={module.thumbnailUrl}
+            src={imageAt(module.thumbnailUrl, 192)}
             alt=""
             className="w-24 aspect-[16/9] object-cover rounded-xs border border-rule shrink-0"
           />

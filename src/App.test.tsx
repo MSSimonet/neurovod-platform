@@ -173,12 +173,13 @@ describe('ruteo hacia el panel del profesional', () => {
     expect(within(cabecera).queryByRole('button', { name: /panel médico/i })).not.toBeInTheDocument();
   });
 
-  test('entrar por el hash del panel muestra la vista administrativa', () => {
+  test('entrar por el hash del panel muestra la vista administrativa', async () => {
     window.history.replaceState({}, '', '/#/admin');
 
     renderConPlataforma(<App />);
 
-    expect(screen.getByText(/panel médico/i)).toBeInTheDocument();
+    // El panel viaja en su propio paquete: aparece recién cuando termina de bajar.
+    expect(await screen.findByText(/panel médico/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /volver al sitio/i })).toBeInTheDocument();
   });
 });

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { Suspense, lazy, useMemo, useState } from 'react';
 import { usePlatform } from './context/PlatformContext';
 import { Navbar } from './components/Navbar';
 import { HeroBanner } from './components/HeroBanner';
@@ -13,8 +13,16 @@ import { ModuleDetailModal } from './components/ModuleDetailModal';
 import { VideoPlayerModal } from './components/VideoPlayerModal';
 import { CheckoutModal } from './components/CheckoutModal';
 import { AuthModal } from './components/AuthModal';
-import { AdminDashboard } from './components/AdminDashboard';
 import { DemoPresentationToolbar } from './components/DemoPresentationToolbar';
+
+/**
+ * El panel de gestión es privado y lo usa una sola persona: no tiene por qué
+ * viajar en el paquete que baja una familia para ver el catálogo. Se carga
+ * recién cuando se entra a /admin.
+ */
+const AdminDashboard = lazy(() =>
+  import('./components/AdminDashboard').then((modulo) => ({ default: modulo.AdminDashboard })),
+);
 
 export const App = () => {
   const { modules, filters, purchasedModuleIds, resetFilters, route } = usePlatform();
@@ -63,7 +71,17 @@ export const App = () => {
   );
 
   if (route === '/admin') {
-    return <AdminDashboard />;
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-app flex items-center justify-center">
+            <p className="kicker">Abriendo el panel</p>
+          </div>
+        }
+      >
+        <AdminDashboard />
+      </Suspense>
+    );
   }
 
   return (

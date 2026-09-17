@@ -4,6 +4,7 @@ import { Episode } from '../types';
 import { Modal } from './ui/Modal';
 import { conditionTag, CONDITION_META, formatArs, formatMinutes } from '../lib/format';
 import { Play, Lock, Download, Check, FileText } from 'lucide-react';
+import { imageAt } from '../lib/imageUrl';
 
 export const ModuleDetailModal = () => {
   const {
@@ -217,7 +218,7 @@ export const ModuleDetailModal = () => {
             <div className="border-t border-ink pt-4">
               <div className="flex items-center gap-3">
                 <img
-                  src={module.doctor.avatarUrl}
+                  src={imageAt(module.doctor.avatarUrl, 96)}
                   alt=""
                   className="w-12 h-12 rounded-full object-cover border border-rule"
                 />

@@ -6,6 +6,7 @@ import { EpisodeManager } from './admin/EpisodeManager';
 import { conditionTag, CONDITION_META, formatArs, formatDate } from '../lib/format';
 import { leadDoctor } from '../data/catalog';
 import { ArrowLeft, Pencil, Trash2, Check } from 'lucide-react';
+import { imageAt } from '../lib/imageUrl';
 
 type AdminTab = 'catalogo' | 'clases' | 'ventas';
 
@@ -165,7 +166,7 @@ export const AdminDashboard = () => {
                           <td className="px-5 py-3">
                             <div className="flex items-center gap-3 min-w-0">
                               <img
-                                src={mod.thumbnailUrl}
+                                src={imageAt(mod.thumbnailUrl, 112)}
                                 alt=""
                                 className="w-14 aspect-[16/9] object-cover rounded-xs border border-rule shrink-0"
                               />

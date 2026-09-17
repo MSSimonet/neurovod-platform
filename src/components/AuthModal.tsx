@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePlatform, UserRole } from '../context/PlatformContext';
 import { Modal } from './ui/Modal';
 import { Eye, EyeOff, LogOut } from 'lucide-react';
+import { imageAt } from '../lib/imageUrl';
 
 const DEMO_ROLES: { role: Exclude<UserRole, 'Médico / Administrador'>; label: string }[] = [
   { role: 'Padre / Madre', label: 'Familia' },
@@ -38,7 +39,7 @@ export const AuthModal = () => {
 
           <div className="mt-5 flex items-center gap-4 border-y border-rule py-5">
             <img
-              src={user.avatarUrl}
+              src={imageAt(user.avatarUrl, 112)}
               alt=""
               className="w-14 h-14 rounded-full object-cover border border-rule"
             />

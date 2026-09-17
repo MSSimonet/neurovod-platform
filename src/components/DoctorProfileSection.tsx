@@ -1,6 +1,7 @@
 import React from 'react';
 import { leadDoctor } from '../data/catalog';
 import { ShieldCheck, FileText, RotateCcw, Stethoscope } from 'lucide-react';
+import { imageAt } from '../lib/imageUrl';
 
 const GUARANTEES = [
   {
@@ -75,7 +76,7 @@ export const DoctorProfileSection = () => {
 
             <div className="mt-7 flex items-center gap-4 border-t border-ink pt-5">
               <img
-                src={leadDoctor.avatarUrl}
+                src={imageAt(leadDoctor.avatarUrl, 112)}
                 alt={`Retrato del ${leadDoctor.name}`}
                 className="w-14 h-14 rounded-full object-cover border border-rule"
                 loading="lazy"

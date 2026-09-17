@@ -3,6 +3,7 @@ import { usePlatform } from '../context/PlatformContext';
 import { ConditionType } from '../types';
 import { scrollToCatalog } from '../lib/scrollToCatalog';
 import { Search, SlidersHorizontal, X, BookMarked } from 'lucide-react';
+import { imageAt } from '../lib/imageUrl';
 
 interface NavbarProps {
   onOpenFilters: () => void;
@@ -91,7 +92,7 @@ export const Navbar = ({ onOpenFilters, isFiltersOpen }: NavbarProps) => {
               {user ? (
                 <>
                   <img
-                    src={user.avatarUrl}
+                    src={imageAt(user.avatarUrl, 64)}
                     alt=""
                     className="w-8 h-8 rounded-full object-cover border border-rule-strong"
                   />
