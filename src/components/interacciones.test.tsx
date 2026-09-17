@@ -108,6 +108,38 @@ describe('buscador de la barra superior', () => {
 });
 
 describe('panel de filtros', () => {
+  test('el buscador del panel filtra el catálogo', async () => {
+    const { usuario } = renderConPlataforma(<App />);
+    await usuario.click(screen.getByRole('button', { name: /filtros del catálogo/i }));
+    const panel = await screen.findByRole('region', { name: /filtros del catálogo/i });
+
+    await usuario.type(within(panel).getByLabelText(/síntoma o tema/i), 'sueño');
+
+    expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent(/para tu búsqueda/i);
+  });
+
+  test('el buscador del panel se vacía con su propio botón', async () => {
+    const { usuario } = renderConPlataforma(<App />);
+    await usuario.click(screen.getByRole('button', { name: /filtros del catálogo/i }));
+    const panel = await screen.findByRole('region', { name: /filtros del catálogo/i });
+    const campo = within(panel).getByLabelText(/síntoma o tema/i);
+    await usuario.type(campo, 'sueño');
+
+    await usuario.click(await within(panel).findByRole('button', { name: /borrar lo buscado/i }));
+
+    expect(campo).toHaveValue('');
+  });
+
+  test('el buscador del panel y el de la barra superior comparten lo escrito', async () => {
+    const { usuario } = renderConPlataforma(<App />);
+    await usuario.type(screen.getByLabelText(/buscar en el catálogo clínico/i), 'sueño');
+
+    await usuario.click(screen.getByRole('button', { name: /filtros del catálogo/i }));
+    const panel = await screen.findByRole('region', { name: /filtros del catálogo/i });
+
+    expect(within(panel).getByLabelText(/síntoma o tema/i)).toHaveValue('sueño');
+  });
+
   test('el botón de limpiar aparece al filtrar y restablece todo', async () => {
     const { usuario } = renderConPlataforma(<App />);
     await usuario.click(screen.getByRole('button', { name: /filtros del catálogo/i }));

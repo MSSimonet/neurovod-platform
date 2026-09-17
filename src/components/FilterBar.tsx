@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePlatform } from '../context/PlatformContext';
 import { ConditionType, ContentType, TargetAudience } from '../types';
-import { X, RotateCcw } from 'lucide-react';
+import { X, RotateCcw, Search } from 'lucide-react';
 
 interface FilterBarProps {
   isOpen: boolean;
@@ -113,6 +113,42 @@ export const FilterBar = ({ isOpen, onClose, filteredCount }: FilterBarProps) =>
         </div>
 
         <div className="rule-grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+          {/*
+            Debajo de 640px la barra superior esconde su buscador, así que una
+            vez pasada la portada el catálogo se quedaba sin forma de buscar.
+            Este campo aparece exactamente donde aquel desaparece: nunca hay
+            dos buscadores en pantalla al mismo tiempo.
+          */}
+          <div className="rule-cell p-5 sm:hidden">
+            <label htmlFor="busqueda-catalogo" className="label">
+              Síntoma o tema
+            </label>
+            <div className="relative">
+              <Search
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ink-muted"
+                aria-hidden="true"
+              />
+              <input
+                id="busqueda-catalogo"
+                type="search"
+                value={filters.searchQuery}
+                onChange={(e) => setFilters((prev) => ({ ...prev, searchQuery: e.target.value }))}
+                placeholder="Sueño, colapso, escuela"
+                className="field w-full pl-8 pr-8 py-2 text-[13px]"
+              />
+              {filters.searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setFilters((prev) => ({ ...prev, searchQuery: '' }))}
+                  aria-label="Borrar lo buscado"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+
           <FilterFieldset
             legend="Condición clínica"
             options={conditions}

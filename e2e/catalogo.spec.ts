@@ -50,3 +50,24 @@ test('abrir una ficha muestra el índice de clases y se cierra con Escape', asyn
 
   await expect(ficha).toBeHidden();
 });
+
+test('en teléfono se puede buscar desde el panel de filtros', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'el campo del panel sólo se muestra en pantalla chica');
+
+  await page.getByRole('button', { name: /filtros del catálogo/i }).click();
+  const panel = page.getByRole('region', { name: /filtros del catálogo/i });
+
+  await panel.getByLabel(/síntoma o tema/i).fill('sueño');
+
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(/para tu búsqueda/i);
+});
+
+test('en escritorio el panel no repite el buscador de la barra superior', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'en pantalla chica el buscador del panel es el único');
+
+  await page.getByRole('button', { name: /filtros del catálogo/i }).click();
+  const panel = page.getByRole('region', { name: /filtros del catálogo/i });
+
+  await expect(panel.getByLabel(/síntoma o tema/i)).toBeHidden();
+  await expect(page.getByLabel(/buscar en el catálogo clínico/i)).toBeVisible();
+});
