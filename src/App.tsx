@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useMemo, useState } from 'react';
 import { usePlatform } from './context/PlatformContext';
+import { useCanonical } from './lib/useCanonical';
 import { Navbar } from './components/Navbar';
 import { HeroBanner } from './components/HeroBanner';
 import { ContinueWatching } from './components/ContinueWatching';
@@ -26,6 +27,9 @@ const AdminDashboard = lazy(() =>
 
 export const App = () => {
   const { modules, filters, purchasedModuleIds, resetFilters, route } = usePlatform();
+
+  // Las dos vistas comparten el HTML: la canónica se ajusta a la ruta abierta.
+  useCanonical(route);
   const [isFilterBarOpen, setIsFilterBarOpen] = useState(false);
 
   const isFiltering =
