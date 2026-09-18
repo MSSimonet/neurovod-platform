@@ -1,16 +1,51 @@
 import { ModuleItem, DoctorProfile } from '../types';
 
 export const leadDoctor: DoctorProfile = {
-  name: "Dr. Julián Rossi",
-  title: "Médico Especialista en Neurología Infantil y Neurodesarrollo",
-  specialty: "Trastorno del Espectro Autista (TEA) & TDAH",
-  licenseNumber: "MN 142.890 / MP 45.210",
-  bio: "Médico de planta del Hospital Pediátrico de Referencia y docente universitario. Con más de 16 años de práctica clínica acompañando a más de 3.500 familias en el diagnóstico, abordaje interdisciplinario y estrategias psicoeducativas para potenciar el neurodesarrollo.",
+  name: "Dr. José Nogueira",
+  title: "Médico Pediatra · Salud mental infantojuvenil y psiquiatría",
+  specialty: "Neurodiversidad · Salud mental infantojuvenil",
+  // La nacional va primera: es la que se muestra sola donde no entran las tres.
+  licenses: ["MN 65891", "MP Entre Ríos 6356", "MP Corrientes 8198"],
+  bio: "Médico pediatra con más de 40 años de práctica clínica. Trabaja en salud mental infantojuvenil y psiquiatría, con foco en neurodiversidad: evaluación, diagnóstico, orientación y seguimiento. Atiende en consultorios de Entre Ríos y Corrientes.",
   // Foto propia del profesional. Las versiones por ancho las genera
   // scripts/imagenes/generar.mjs; imageAt elige cuál pedir en cada lugar.
   avatarUrl: "/dr/retrato-1400.webp",
-  experienceYears: 16,
+  experienceYears: 40,
   inPersonConsultFeeArs: 60000,
+  contact: {
+    whatsapp: "+54 343 745 6804",
+    // Formato de wa.me para un celular argentino: 54 + 9 + área + número.
+    whatsappUrl: "https://wa.me/5493437456804",
+    phones: ["3772 661137", "3437 456804"],
+    instagramUser: "dr.josenogueira_",
+    instagramUrl: "https://instagram.com/dr.josenogueira_",
+  },
+  consultingRooms: [
+    {
+      city: "Concordia",
+      province: "Entre Ríos",
+      place: "Consultorio Salus",
+      address: "Urquiza 1127",
+    },
+    {
+      city: "Paso de los Libres",
+      province: "Corrientes",
+      place: "Consultorio CIMA",
+      address: "Colón 1488",
+    },
+    {
+      city: "Mercedes",
+      province: "Corrientes",
+      place: "Centro de Jubilados Nacionales",
+      address: "Pedro Ferré 882",
+    },
+    {
+      city: "Monte Caseros",
+      province: "Corrientes",
+      place: "Policonsultorios del Salvador",
+      address: "Córdoba 121",
+    },
+  ],
 };
 
 export const sampleModules: ModuleItem[] = [

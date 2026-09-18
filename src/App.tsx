@@ -9,6 +9,7 @@ import { FilterBar } from './components/FilterBar';
 import { ContentRow } from './components/ContentRow';
 import { ModuleCard } from './components/ModuleCard';
 import { DoctorProfileSection } from './components/DoctorProfileSection';
+import { ConsultingRooms } from './components/ConsultingRooms';
 import { Footer } from './components/Footer';
 import { ModuleDetailModal } from './components/ModuleDetailModal';
 import { VideoPlayerModal } from './components/VideoPlayerModal';
@@ -187,6 +188,8 @@ export const App = () => {
             />
 
             <DoctorProfileSection />
+
+            <ConsultingRooms />
           </>
         )}
       </main>

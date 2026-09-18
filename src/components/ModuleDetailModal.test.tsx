@@ -4,6 +4,7 @@ import { screen, within } from '@testing-library/react';
 import { renderConPlataforma } from '../test/render';
 import { ModuleDetailModal } from './ModuleDetailModal';
 import { usePlatform } from '../context/PlatformContext';
+import { leadDoctor } from '../data/catalog';
 
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 
@@ -62,8 +63,8 @@ describe('ficha de un módulo bloqueado', () => {
     renderConPlataforma(<Ficha moduleId={BLOQUEADO} />);
 
     const dialogo = await screen.findByRole('dialog');
-    expect(within(dialogo).getByText(/Julián Rossi/)).toBeInTheDocument();
-    expect(within(dialogo).getByText(/MN 142\.890/)).toBeInTheDocument();
+    expect(within(dialogo).getByText(new RegExp(leadDoctor.name))).toBeInTheDocument();
+    expect(within(dialogo).getByText(new RegExp(leadDoctor.licenses[0]))).toBeInTheDocument();
   });
 
   test('enumera qué resuelve el programa', async () => {

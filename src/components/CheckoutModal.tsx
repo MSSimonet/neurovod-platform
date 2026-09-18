@@ -142,7 +142,7 @@ export const CheckoutModal = () => {
             {[
               ['Comprobante', receipt.paymentId],
               ['Programa', module.title],
-              ['Profesional', `${module.doctor.name} (${module.doctor.licenseNumber})`],
+              ['Profesional', `${module.doctor.name} (${module.doctor.licenses.join(' · ')})`],
               ['Medio de pago', receipt.detail],
               ['Fecha', formatDate(receipt.processedAt)],
               ['Titular', email],

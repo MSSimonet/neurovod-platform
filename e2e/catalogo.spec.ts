@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
 
 test('la portada se presenta con el titular y la credencial del profesional', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toContainText(/lo que explico en consulta/i);
-  await expect(page.getByText(/MN 142\.890/).first()).toBeVisible();
+  await expect(page.getByText(/MN 65891/).first()).toBeVisible();
 });
 
 test('buscar un síntoma desde la portada filtra el catálogo', async ({ page }) => {

@@ -81,11 +81,14 @@ export const DoctorProfileSection = () => {
                 className="w-14 h-14 rounded-full object-cover border border-rule"
                 loading="lazy"
               />
-              <div>
+              <div className="min-w-0">
                 <p className="font-semibold text-ink">{leadDoctor.name}</p>
                 <p className="tabular text-2xs uppercase tracking-wider text-ink-muted mt-0.5">
-                  {leadDoctor.specialty} · Matrícula {leadDoctor.licenseNumber} ·{' '}
-                  {leadDoctor.experienceYears} años de práctica
+                  {leadDoctor.specialty} · +{leadDoctor.experienceYears} años de práctica
+                </p>
+                {/* Las tres matrículas juntas: es el bloque donde se acredita. */}
+                <p className="tabular text-2xs uppercase tracking-wider text-ink-muted mt-1">
+                  {leadDoctor.licenses.join(' · ')}
                 </p>
               </div>
             </div>

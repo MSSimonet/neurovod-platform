@@ -25,7 +25,7 @@ describe('encabezado e indicadores', () => {
     renderConPlataforma(<AdminDashboard />);
 
     expect(screen.getByText(/panel médico/i)).toBeInTheDocument();
-    expect(screen.getByText(/Julián Rossi/)).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(leadDoctor.name))).toBeInTheDocument();
   });
 
   test('muestra la matrícula tal como está registrada', () => {
@@ -33,7 +33,7 @@ describe('encabezado e indicadores', () => {
 
     // El encabezado la trituraba con un replace y mostraba las dos matrículas
     // pegadas en un número que no existe. Acá se lee igual que en la portada.
-    expect(screen.getByText(`${leadDoctor.name} · ${leadDoctor.licenseNumber}`)).toBeInTheDocument();
+    expect(screen.getByText(`${leadDoctor.name} · ${leadDoctor.licenses[0]}`)).toBeInTheDocument();
   });
 
   test('resume facturación, operaciones y contenido publicado', () => {

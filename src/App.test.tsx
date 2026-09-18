@@ -3,6 +3,7 @@ import { describe, expect, test, vi, beforeEach } from 'vitest';
 import { screen, within, waitFor } from '@testing-library/react';
 import { renderConPlataforma } from './test/render';
 import App from './App';
+import { leadDoctor } from './data/catalog';
 
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 
@@ -16,7 +17,7 @@ describe('portada del compendio', () => {
     renderConPlataforma(<App />);
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/lo que explico en consulta/i);
-    expect(screen.getAllByText(/MN 142\.890/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(new RegExp(leadDoctor.licenses[0])).length).toBeGreaterThan(0);
   });
 
   test('cuenta los programas y las clases disponibles', () => {

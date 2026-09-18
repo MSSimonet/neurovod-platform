@@ -36,16 +36,42 @@ export interface Episode {
   resources?: EpisodeResource[];
 }
 
+/** Consultorio donde el profesional atiende en persona. */
+export interface ConsultingRoom {
+  city: string;
+  province: string;
+  place: string;
+  address: string;
+}
+
+/** Canales por los que una familia pide turno. */
+export interface DoctorContact {
+  /** Numero tal como se muestra, en formato legible. */
+  whatsapp: string;
+  /** Enlace ya armado: evita que cada pantalla invente el formato. */
+  whatsappUrl: string;
+  /** Telefonos de turnos, como los dicta el consultorio. */
+  phones: string[];
+  instagramUser: string;
+  instagramUrl: string;
+}
+
 export interface DoctorProfile {
   name: string;
   title: string;
   specialty: string;
-  /** Matricula profesional. Requisito E-E-A-T, siempre visible en la ficha. */
-  licenseNumber: string;
+  /**
+   * Matriculas profesionales. Requisito E-E-A-T, siempre visibles en la ficha.
+   * La primera es la nacional: es la que se muestra sola cuando no entran
+   * todas, como en el pie de una tarjeta.
+   */
+  licenses: string[];
   bio: string;
   avatarUrl: string;
   experienceYears: number;
   inPersonConsultFeeArs: number;
+  contact: DoctorContact;
+  consultingRooms: ConsultingRoom[];
 }
 
 export interface ModuleItem {

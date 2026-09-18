@@ -25,7 +25,7 @@ export const Footer = () => {
               familias, docentes y equipos terapéuticos de Argentina y Latinoamérica.
             </p>
             <p className="tabular mt-5 text-2xs uppercase tracking-wider text-ink-muted">
-              {leadDoctor.name} · Matrícula {leadDoctor.licenseNumber}
+              {leadDoctor.name} · {leadDoctor.licenses.join(' · ')}
             </p>
           </div>
 
@@ -43,11 +43,36 @@ export const Footer = () => {
 
           {/* Contacto */}
           <div className="md:col-span-3">
-            <p className="label">Contacto</p>
+            <p className="label">Turnos y consultas</p>
             <ul className="space-y-2 text-[13px] text-ink-secondary">
-              <li>contacto@neurovod.med.ar</li>
-              <li className="tabular">+54 11 4821 0000</li>
-              <li className="text-ink-muted">Consultorio en CABA, con agenda sujeta a disponibilidad.</li>
+              <li>
+                <a
+                  href={leadDoctor.contact.whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="tabular text-accent hover:text-accent-hover"
+                >
+                  WhatsApp {leadDoctor.contact.whatsapp}
+                </a>
+              </li>
+              {leadDoctor.contact.phones.map((phone) => (
+                <li key={phone} className="tabular">
+                  {phone}
+                </li>
+              ))}
+              <li>
+                <a
+                  href={leadDoctor.contact.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-accent hover:text-accent-hover"
+                >
+                  @{leadDoctor.contact.instagramUser}
+                </a>
+              </li>
+              <li className="text-ink-muted">
+                Consultorios en Entre Ríos y Corrientes, con agenda sujeta a disponibilidad.
+              </li>
             </ul>
           </div>
         </div>
@@ -62,7 +87,7 @@ export const Footer = () => {
 
         <div className="mt-8 pt-6 border-t border-rule flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <p className="tabular text-2xs text-ink-muted">
-            © 2026 NEUROVOD MÉDICA · BUENOS AIRES, ARGENTINA
+            © 2026 NEUROVOD MÉDICA · ENTRE RÍOS Y CORRIENTES, ARGENTINA
           </p>
           <ul className="flex flex-wrap items-center gap-4 text-2xs text-ink-muted">
             {LEGAL.map((item) => (

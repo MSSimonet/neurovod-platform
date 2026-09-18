@@ -225,7 +225,7 @@ export const ModuleDetailModal = () => {
                 <div className="min-w-0">
                   <p className="text-[13px] font-semibold text-ink">{module.doctor.name}</p>
                   <p className="tabular text-2xs uppercase tracking-wider text-ink-muted">
-                    Matrícula {module.doctor.licenseNumber}
+                    Matrícula {module.doctor.licenses[0]}
                   </p>
                 </div>
               </div>

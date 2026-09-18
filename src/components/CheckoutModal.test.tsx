@@ -4,6 +4,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { renderConPlataforma } from '../test/render';
 import { CheckoutModal } from './CheckoutModal';
 import { usePlatform } from '../context/PlatformContext';
+import { leadDoctor } from '../data/catalog';
 
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 
@@ -165,7 +166,11 @@ describe('confirmación de la compra', () => {
 
     await usuario.click(screen.getByRole('button', { name: /pagar/i }));
 
-    const comprobante = await screen.findByText(/MN 142\.890/, {}, { timeout: 5000 });
+    const comprobante = await screen.findByText(
+      new RegExp(leadDoctor.licenses[0]),
+      {},
+      { timeout: 5000 },
+    );
     expect(comprobante).toBeInTheDocument();
   });
 

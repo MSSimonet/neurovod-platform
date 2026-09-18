@@ -27,7 +27,7 @@ export const HeroBanner = () => {
     `${String(modules.length).padStart(2, '0')} programas`,
     `${totalEpisodes} clases`,
     `${totalHours} h de material`,
-    `${leadDoctor.experienceYears} años de consultorio`,
+    `+${leadDoctor.experienceYears} años de consultorio`,
   ];
 
   const buscar = (event: React.FormEvent) => {
@@ -108,7 +108,7 @@ export const HeroBanner = () => {
               {leadDoctor.name}
             </h2>
             <p className="tabular mt-1 text-2xs uppercase tracking-wider text-rule-strong">
-              {leadDoctor.specialty} · Matrícula {leadDoctor.licenseNumber} · Consultorio CABA
+              {leadDoctor.specialty} · Matrícula {leadDoctor.licenses[0]} · Entre Ríos y Corrientes
             </p>
           </figcaption>
         </figure>
