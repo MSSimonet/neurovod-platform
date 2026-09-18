@@ -30,3 +30,7 @@ playwright-report/
 
 # Cobertura de tests
 coverage
+
+# Metadatos de carpeta de Windows
+desktop.ini
+Thumbs.db

@@ -3,6 +3,7 @@ import { usePlatform } from '../context/PlatformContext';
 import { leadDoctor } from '../data/catalog';
 import { scrollToCatalog } from '../lib/scrollToCatalog';
 import { Search, ShieldCheck } from 'lucide-react';
+import { imageAt, retratoSrcSet } from '../lib/imageUrl';
 
 export const HeroBanner = () => {
   const { modules, setFilters } = usePlatform();
@@ -94,7 +95,10 @@ export const HeroBanner = () => {
         {/* Retrato del profesional, a sangre contra el borde de la pantalla */}
         <figure className="relative order-2 min-h-[420px] lg:min-h-0 border-t lg:border-t-0 border-rule">
           <img
-            src={leadDoctor.avatarUrl}
+            src={imageAt(leadDoctor.avatarUrl, 1000)}
+            srcSet={retratoSrcSet()}
+            /* Media pantalla desde el escritorio; todo el ancho en teléfono. */
+            sizes="(min-width: 1024px) 50vw, 100vw"
             alt={`Retrato del ${leadDoctor.name}`}
             className="absolute inset-0 w-full h-full object-cover object-top"
             loading="eager"

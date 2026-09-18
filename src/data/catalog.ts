@@ -6,7 +6,9 @@ export const leadDoctor: DoctorProfile = {
   specialty: "Trastorno del Espectro Autista (TEA) & TDAH",
   licenseNumber: "MN 142.890 / MP 45.210",
   bio: "Médico de planta del Hospital Pediátrico de Referencia y docente universitario. Con más de 16 años de práctica clínica acompañando a más de 3.500 familias en el diagnóstico, abordaje interdisciplinario y estrategias psicoeducativas para potenciar el neurodesarrollo.",
-  avatarUrl: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=600&auto=format&fit=crop",
+  // Foto propia del profesional. Las versiones por ancho las genera
+  // scripts/imagenes/generar.mjs; imageAt elige cuál pedir en cada lugar.
+  avatarUrl: "/dr/retrato-1400.webp",
   experienceYears: 16,
   inPersonConsultFeeArs: 60000,
 };
